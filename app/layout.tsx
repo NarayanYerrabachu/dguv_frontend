@@ -4,22 +4,24 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 
 export const metadata: Metadata = {
-  title: "DGUV Chat",
-  description: "DGUV Chat Application",
+  title: "DGUV App",
+  description: "Next.js App",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="de">
-      <body>
+      <body className="min-h-screen bg-white">
         <Header />
-        <main className="pt-[var(--header-height)] pb-[var(--footer-height)] h-screen overflow-hidden">
+
+        <main className="pt-24 pb-28 px-6 bg-white">
           {children}
         </main>
+
         <Footer />
       </body>
     </html>
