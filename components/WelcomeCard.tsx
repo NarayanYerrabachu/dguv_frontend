@@ -18,7 +18,7 @@ export default function WelcomeCard() {
               width={52}
               height={52}
               priority
-              style={{ filter: 'brightness(0) invert(1)' }}
+              className="brightness-0 invert"
             />
           </div>
 

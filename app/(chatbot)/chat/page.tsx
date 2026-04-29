@@ -1,5 +1,9 @@
 import ChatContent from "@/components/ChatContent";
 
 export default function ChatPage() {
-  return <ChatContent />;
+  return (
+    <div className="w-full max-w-[1600px]">
+      <ChatContent />
+    </div>
+  );
 }

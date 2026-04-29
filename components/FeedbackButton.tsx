@@ -14,52 +14,21 @@ export default function FeedbackButton() {
       title="Feedback geben"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      style={{
-        position: 'fixed',
-        right: '1rem',
-        top: '50%',
-        transform: 'translateY(-50%)',
-
-        width: '72px',
-        height: '92px',
-
-        backgroundColor: isHovered ? '#004994' : '#ffffff',
-        border: '1px solid #c8d3df',
-        borderRadius: '8px',
-
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '8px',
-
-        textDecoration: 'none',
-        cursor: 'pointer',
-
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.10)',
-        transition: 'all 0.2s ease',
-        zIndex: 50,
-      }}
+      className="fixed right-4 top-1/2 -translate-y-1/2 w-[72px] h-[92px] border border-[#c8d3df] rounded-lg flex flex-col items-center justify-center gap-2 no-underline cursor-pointer shadow-[0_4px_12px_rgba(0,0,0,0.10)] transition-all duration-200 ease-in-out z-50"
+      style={{ backgroundColor: isHovered ? '#004994' : '#ffffff' }}
     >
       <Image
         src="/note-pencil.svg"
         alt="Feedback"
         width={34}
         height={34}
-        style={{
-          width: '34px',
-          height: '34px',
-          filter: isHovered ? 'brightness(0) invert(1)' : 'none',
-        }}
+        className="w-[34px] h-[34px]"
+        style={{ filter: isHovered ? 'brightness(0) invert(1)' : 'none' }}
       />
 
       <span
-        style={{
-          fontSize: '14px',
-          fontWeight: 400,
-          color: isHovered ? '#ffffff' : '#004994',
-          fontFamily: "'Source Sans 3', Arial, sans-serif",
-        }}
+        className="text-sm font-normal font-['Source_Sans_3',Arial,sans-serif]"
+        style={{ color: isHovered ? '#ffffff' : '#004994' }}
       >
         Feedback
       </span>
