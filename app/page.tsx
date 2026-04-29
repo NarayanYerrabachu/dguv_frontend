@@ -1,12 +1,5 @@
-import WelcomeCard from './components/WelcomeCard';
-import FeedbackButton from './components/FeedbackButton';
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  return (
-    
-      <div>
-      <WelcomeCard />
-      <FeedbackButton />
-    </div>
-  );
+  redirect("/welcome");
 }
