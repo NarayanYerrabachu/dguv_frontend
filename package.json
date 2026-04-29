@@ -5,11 +5,19 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "./scripts/start.sh",
+    "stop": "./scripts/stop.sh",
+    "restart": "npm run stop && npm start",
+    "start:prod": "npm run build && next start",
+    "check:deps": "node scripts/check-deps.js",
+    "check:env": "node scripts/check-env.js",
     "lint": "eslint"
   },
   "dependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
+    "jsonwebtoken": "^9.0.3",
     "next": "16.2.4",
+    "openai": "^6.34.0",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
