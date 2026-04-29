@@ -17,6 +17,7 @@ export default function WelcomeCard() {
               alt="Chat"
               width={52}
               height={52}
+              priority
               style={{ filter: 'brightness(0) invert(1)' }}
             />
           </div>
