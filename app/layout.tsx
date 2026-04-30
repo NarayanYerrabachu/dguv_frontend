@@ -18,7 +18,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-white">
         <Header />
 
-        <main className="pt-24 pb-28 px-6 bg-white">
+        <main className="pt-4 pb-16 px-6 bg-white">
           {children}
         </main>
 

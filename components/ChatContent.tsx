@@ -140,11 +140,11 @@ export default function ChatContent() {
 
   return (
     <ChatLayout>
-      {/* <MessageList
+      <MessageList
         messages={messages}
         isLoading={isLoading}
         messagesEndRef={messagesEndRef}
-      /> */}
+      />
 
       <ChatInputArea
         input={input}
