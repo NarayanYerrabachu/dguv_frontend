@@ -19,7 +19,7 @@ export default function MessageList({
   messagesEndRef,
 }: MessageListProps) {
   return (
-    <main className="flex-1 overflow-y-auto px-4 py-6 [padding-bottom:calc(80px+var(--footer-height))]">
+   <main className="h-full overflow-y-auto px-4 py-6 pb-32">
       <div className="mx-auto flex max-w-[800px] flex-col gap-4">
         {messages.map((message, index) => (
           <ChatMessage

@@ -24,24 +24,24 @@ export default function ChatInputArea({
   onMicrophoneClick,
 }: ChatInputAreaProps) {
   return (
-    <footer className="mt-auto w-full border-t border-gray-200 bg-gray-50">
-      <form onSubmit={onSubmit}>
-        <div className="flex items-end gap-2">
-          <ChatTextarea
-            value={input}
-            onChange={onInputChange}
-            onKeyDown={onKeyDown}
-          />
-          <SendButton disabled={!input.trim() || isLoading}/>
-          <MicrophoneButton
-            isRecording={isRecording}
-            isTranscribing={isTranscribing}
-            onClick={onMicrophoneClick}
-          />
+<footer className="absolute  bottom-8 left-10 right-10 border-t border-gray-200">
+  <form onSubmit={onSubmit}>
+    <div className="flex items-end gap-2 ">
+      <ChatTextarea
+        value={input}
+        onChange={onInputChange}
+        onKeyDown={onKeyDown}
+      />
 
+      <SendButton disabled={!input.trim() || isLoading} />
 
-        </div>
-      </form>
-    </footer>
+      <MicrophoneButton
+        isRecording={isRecording}
+        isTranscribing={isTranscribing}
+        onClick={onMicrophoneClick}
+      />
+    </div>
+  </form>
+</footer>
   );
 }
