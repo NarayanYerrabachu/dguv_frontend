@@ -8,7 +8,7 @@ export default function ChatbotLayout({
 }) {
   return (
     <BlueBox>
-      <div className="flex min-h-0 flex-1 flex-col">
+      <div className="flex min-h-0 flex-1 flex-col items-center justify-center">
         {children}
       </div>
 

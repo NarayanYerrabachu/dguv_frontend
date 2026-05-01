@@ -9,7 +9,6 @@ export default function WelcomePage() {
       <ContentCard>
         <WelcomeContent />
       </ContentCard>
-      <FeedbackButton />
     </div>
   );
 }
