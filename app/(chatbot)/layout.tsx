@@ -1,5 +1,4 @@
 import BlueBox from "@/components/BlueBox";
-import ContentCard from "@/components/ContentCard";
 import FeedbackButton from "@/components/FeedbackButton";
 
 export default function ChatbotLayout({
@@ -9,8 +8,11 @@ export default function ChatbotLayout({
 }) {
   return (
     <BlueBox>
-      {children}
-      <FeedbackButton/>
+      <div className="flex min-h-0 flex-1 flex-col">
+        {children}
+      </div>
+
+      <FeedbackButton />
     </BlueBox>
   );
 }

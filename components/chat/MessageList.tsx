@@ -19,8 +19,10 @@ export default function MessageList({
   messagesEndRef,
 }: MessageListProps) {
   return (
-   <main className="h-full overflow-y-auto px-4 py-6 pb-32">
-      <div className="mx-auto flex max-w-[800px] flex-col gap-4">
+    // This area is scrollable and keeps messages inside the blue box
+    <main className="chat-scrollbar min-h-0 flex-1 overflow-y-scroll px-4 py-6 pr-6">
+      {/* Centers the message content and limits its width */}
+      <div className="mx-auto flex w-full max-w-200 flex-col gap-4">
         {messages.map((message, index) => (
           <ChatMessage
             key={index}
@@ -29,8 +31,10 @@ export default function MessageList({
           />
         ))}
 
+        {/* Shows loading animation while waiting for the assistant response */}
         {isLoading && <LoadingMessage />}
 
+        {/* Invisible element used to scroll automatically to the latest message */}
         <div ref={messagesEndRef} />
       </div>
     </main>

@@ -1,10 +1,10 @@
-interface ChatLayoutProps {
+export default function ChatLayout({
+  children,
+}: {
   children: React.ReactNode;
-}
-
-export default function ChatLayout({ children }: ChatLayoutProps) {
+}) {
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex min-h-0 w-full flex-1 flex-col">
       {children}
     </div>
   );

@@ -1,2 +1,32 @@
 @import "tailwindcss";
 
+/* Scrollbar style for the chat message area */
+.chat-scrollbar {
+  /* Firefox scrollbar styling */
+  scrollbar-width: thin;
+  scrollbar-color: #4fa3d1 #d8eefc;
+}
+
+/* Scrollbar width for Chrome, Edge, and Safari */
+.chat-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Scrollbar background track */
+.chat-scrollbar::-webkit-scrollbar-track {
+  background: #d8eefc;
+  border-radius: 9999px;
+}
+
+/* Draggable scrollbar handle */
+.chat-scrollbar::-webkit-scrollbar-thumb {
+  background: #4fa3d1;
+  border-radius: 9999px;
+  border: 2px solid #d8eefc;
+}
+
+/* Hover state for the scrollbar handle */
+.chat-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #2f8fbd;
+}
+
