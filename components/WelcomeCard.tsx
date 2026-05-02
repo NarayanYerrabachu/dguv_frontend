@@ -8,7 +8,7 @@ export default function WelcomeCard() {
 
   return (
     <section className="w-full bg-white py-6">
-      <div className="w-full max-w-[1700px]  mx-auto bg-[#d8eefc] shadow-[8px_8px_8px_rgba(0,0,0,0.25)] px-10 py-30 flex items-center justify-center">
+      <div className="w-full max-w-425  mx-auto bg-[#d8eefc] shadow-[8px_8px_8px_rgba(0,0,0,0.25)] px-10 py-30 flex items-center justify-center">
         <div className="w-full max-w-[650px] relative">
           {/* Avatar Circle */}
           <div className="absolute left-1/2 -top-12 -translate-x-1/2 w-24 h-24 rounded-full bg-[#00549f] flex items-center justify-center shadow-[4px_4px_8px_rgba(0,0,0,0.3)] z-10">
@@ -70,7 +70,7 @@ export default function WelcomeCard() {
 
             <button
               onClick={() => router.push('/chat')}
-              className="w-[320px] h-[50px] mx-auto flex items-center justify-center gap-3 bg-[#b6d900] text-black text-[20px] font-semibold cursor-pointer transition-transform hover:scale-105"
+              className="w-80 h-[50px] mx-auto flex items-center justify-center gap-3 bg-[#b6d900] text-black text-[20px] font-semibold cursor-pointer transition-transform hover:scale-105"
             >
               <span>Dialog starten</span>
 

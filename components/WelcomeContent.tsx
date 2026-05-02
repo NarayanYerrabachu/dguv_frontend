@@ -56,7 +56,7 @@ export default function WelcomeContent() {
 
       <button
         onClick={() => router.push('/chat')}
-        className="w-[320px] h-[50px] mx-auto flex items-center justify-center gap-3 bg-[#b6d900] text-black text-[20px] font-semibold cursor-pointer transition-transform hover:scale-105"
+        className="w-80 h-[50px] mx-auto flex items-center justify-center gap-3 bg-[#b6d900] text-black text-[20px] font-semibold cursor-pointer transition-transform hover:scale-105"
       >
         <span>Dialog starten</span>
 
