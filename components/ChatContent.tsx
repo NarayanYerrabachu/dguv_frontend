@@ -138,24 +138,45 @@ export default function ChatContent() {
     }
   };
 
-  return (
-    <ChatLayout>
-      <MessageList
-        messages={messages}
-        isLoading={isLoading}
-        messagesEndRef={messagesEndRef}
-      />
+const hasMessages = messages.length > 0;
 
-      <ChatInputArea
-        input={input}
-        isLoading={isLoading}
-        isRecording={isRecording}
-        isTranscribing={isTranscribing}
-        onInputChange={(e) => setInput(e.target.value)}
-        onKeyDown={handleKeyDown}
-        onSubmit={handleSubmit}
-        onMicrophoneClick={handleMicrophoneClick}
-      />
-    </ChatLayout>
-  );
+return (
+  <ChatLayout>
+    {hasMessages ? (
+      <>
+        <MessageList
+          messages={messages}
+          isLoading={isLoading}
+          messagesEndRef={messagesEndRef}
+        />
+
+        <ChatInputArea
+          input={input}
+          isLoading={isLoading}
+          isRecording={isRecording}
+          isTranscribing={isTranscribing}
+          onInputChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          onSubmit={handleSubmit}
+          onMicrophoneClick={handleMicrophoneClick}
+        />
+      </>
+    ) : (
+      <div className="flex flex-1 items-center justify-center">
+        <div className="w-full max-w-440">
+          <ChatInputArea
+            input={input}
+            isLoading={isLoading}
+            isRecording={isRecording}
+            isTranscribing={isTranscribing}
+            onInputChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            onSubmit={handleSubmit}
+            onMicrophoneClick={handleMicrophoneClick}
+          />
+        </div>
+      </div>
+    )}
+  </ChatLayout>
+);
 }
