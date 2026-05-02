@@ -22,7 +22,7 @@ export default function MessageList({
     // This area is scrollable and keeps messages inside the blue box
     <main className="chat-scrollbar min-h-0 flex-1 overflow-y-scroll px-4 py-6 pr-6">
       {/* Centers the message content and limits its width */}
-      <div className="mx-auto flex w-full max-w-200 flex-col gap-4">
+      <div className="flex w-full flex-col gap-4">
         {messages.map((message, index) => (
           <ChatMessage
             key={index}
