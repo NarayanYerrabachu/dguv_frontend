@@ -28,8 +28,8 @@ export default function WelcomeCard() {
               <p className="text-[18px] leading-[1.35] text-[#222] mb-4 font-['Source_Sans_3']">
                 Willkommen,
                 <br />
-                ich bin der Chatbot der DGUV zu dem Thema „Sicherheit und
-                Gesundheit in Bildungseinrichtungen".
+                ich bin der Chatbot der DGUV zu dem Thema &bdquo;Sicherheit und
+                Gesundheit in Bildungseinrichtungen&ldquo;.
               </p>
 
               <p className="text-[18px] leading-[1.35] text-[#222] mb-4 font-['Source_Sans_3']">

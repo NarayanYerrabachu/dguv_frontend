@@ -6,14 +6,14 @@ export async function GET() {
   try {
     const themePath = path.join(process.cwd(), 'public', 'assets', 'theme.json');
 
-    let theme: any = {};
+    let theme: Record<string, unknown> = {};
 
     if (fs.existsSync(themePath)) {
       const themeContent = fs.readFileSync(themePath, 'utf8');
-      theme = JSON.parse(themeContent);
+      theme = JSON.parse(themeContent) as Record<string, unknown>;
     }
 
-    const overrides: any = {};
+    const overrides: Record<string, unknown> = {};
 
     for (const [key, value] of Object.entries(process.env)) {
       if (!key.startsWith('THEME_')) continue;

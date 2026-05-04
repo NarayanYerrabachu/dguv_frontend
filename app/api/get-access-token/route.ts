@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
     const heygenApiKey = process.env.HEYGEN_API_KEY;
     const heygenVoiceId = process.env.HEYGEN_VOICE_ID;
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const requestBody: any = {
+    const requestBody: Record<string, unknown> = {
       mode: 'FULL',
       avatar_id: heygenAvatarId,
       avatar_persona: {
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
     };
 
     if (avatarContextId) {
-      requestBody.avatar_persona.context_id = avatarContextId;
+      (requestBody.avatar_persona as Record<string, unknown>).context_id = avatarContextId;
     }
 
     const response = await fetch('https://api.liveavatar.com/v1/sessions/token', {
