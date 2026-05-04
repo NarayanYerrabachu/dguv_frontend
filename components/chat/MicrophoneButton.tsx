@@ -2,27 +2,24 @@ import Image from "next/image";
 
 interface MicrophoneButtonProps {
   isRecording: boolean;
-  isTranscribing: boolean;
   onClick: () => void;
 }
 
-export default function MicrophoneButton({ isRecording, isTranscribing, onClick }: MicrophoneButtonProps) {
+export default function MicrophoneButton({
+  isRecording,
+  onClick,
+}: MicrophoneButtonProps) {
   return (
     <button
       type="button"
       onClick={onClick}
-      disabled={isTranscribing}
       className={`flex hover:bg-[#d8eeff] h-9 w-9 shrink-0 items-center justify-center rounded-lg border-none shadow-sm transition-all duration-200 sm:h-12 sm:w-12 ${
         isRecording ? "bg-[rgba(220,50,50,0.1)]" : "bg-white"
-      } ${
-        isTranscribing
-          ? "cursor-not-allowed opacity-50"
-          : "cursor-pointer"
-      }`}
-      title={isRecording ? "Aufnahme stoppen" : "Sprachaufnahme"}
+      } cursor-pointer`}
+      title={isRecording ? "Aufnahme stoppen" : "Sprachaufnahme starten"}
     >
-      {isTranscribing ? (
-        <div className="h-4 w-4 animate-spin rounded-full border-2 border-[rgba(0,73,148,0.15)] border-t-[#004994] sm:h-5 sm:w-5" />
+      {isRecording ? (
+        <span className="h-3 w-3 rounded-sm bg-red-500 sm:h-4 sm:w-4" />
       ) : (
         <Image
           src="/microphone.svg"

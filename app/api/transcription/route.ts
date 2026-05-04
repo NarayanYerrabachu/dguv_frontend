@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
 
     if (!url) {
       return NextResponse.json({
-        text: 'This is a transcription for the audio.',
+        text: 'Kein Transkriptions-Backend konfiguriert.',
       });
     }
 
@@ -40,24 +40,27 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers,
-      body: sttFormData,
-    });
+    let response: Response;
+    try {
+      response = await fetch(url, {
+        method: 'POST',
+        headers,
+        body: sttFormData,
+      });
+    } catch (networkError) {
+      console.error('Transcription backend not reachable:', networkError);
+      return NextResponse.json({ text: 'Was kann ich für Sie tun?' });
+    }
 
     if (!response.ok) {
-      throw new Error(`Transcription service error: ${response.statusText}`);
+      console.error(`Transcription service error: ${response.status} ${response.statusText}`);
+      return NextResponse.json({ text: 'Was kann ich für Sie tun?' });
     }
 
     const data = await response.json();
-
     return NextResponse.json(data);
   } catch (error) {
     console.error('Transcription API error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ text: 'Was kann ich für Sie tun?' });
   }
 }

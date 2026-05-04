@@ -1,11 +1,10 @@
-import MessageAvatar from "./MessageAvatar";
-
 interface ChatMessageProps {
   role: "user" | "assistant";
   content: string;
+  audioUrl?: string;
 }
 
-export default function ChatMessage({ role, content }: ChatMessageProps) {
+export default function ChatMessage({ role, content, audioUrl }: ChatMessageProps) {
   const isUser = role === "user";
 
   return (
@@ -14,8 +13,6 @@ export default function ChatMessage({ role, content }: ChatMessageProps) {
         isUser ? "justify-end" : "justify-start"
       }`}
     >
-     
-
       <div
         className={`max-w-[calc(100%-56px)] rounded-lg px-5 py-4 text-[0.9375rem] leading-[1.6] font-['Source_Sans_3',ui-sans-serif,system-ui,sans-serif] ${
           isUser
@@ -23,9 +20,12 @@ export default function ChatMessage({ role, content }: ChatMessageProps) {
             : "border border-gray-200 bg-white text-[#333333] shadow-sm"
         }`}
       >
-        <p className="m-0 whitespace-pre-wrap">{content}</p>
+        {audioUrl ? (
+          <audio controls src={audioUrl} className="w-full max-w-40" />
+        ) : (
+          <p className="m-0 whitespace-pre-wrap">{content}</p>
+        )}
       </div>
-
     </div>
   );
 }

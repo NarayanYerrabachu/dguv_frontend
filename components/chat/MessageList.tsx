@@ -1,11 +1,7 @@
 import { RefObject } from "react";
 import ChatMessage from "./ChatMessage";
 import LoadingMessage from "./LoadingMessage";
-
-type Message = {
-  role: "user" | "assistant";
-  content: string;
-};
+import type { Message } from "@/components/ChatContent";
 
 interface MessageListProps {
   messages: Message[];
@@ -19,22 +15,19 @@ export default function MessageList({
   messagesEndRef,
 }: MessageListProps) {
   return (
-    // This area is scrollable and keeps messages inside the blue box
     <main className="chat-scrollbar min-h-0 flex-1 overflow-y-auto px-1 py-3 sm:px-4 sm:py-6">
-      {/* Centers the message content and limits its width */}
       <div className="flex w-full flex-col gap-4">
         {messages.map((message, index) => (
           <ChatMessage
             key={index}
             role={message.role}
             content={message.content}
+            audioUrl={message.audioUrl}
           />
         ))}
 
-        {/* Shows loading animation while waiting for the assistant response */}
         {isLoading && <LoadingMessage />}
 
-        {/* Invisible element used to scroll automatically to the latest message */}
         <div ref={messagesEndRef} />
       </div>
     </main>

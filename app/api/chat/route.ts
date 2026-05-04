@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import OpenAI from 'openai';
 
 export async function POST(request: NextRequest) {
@@ -7,69 +7,58 @@ export async function POST(request: NextRequest) {
     const { msg, context, language } = body;
 
     if (!msg || typeof msg !== 'string') {
-      return NextResponse.json(
-        { error: 'msg is required and must be a string' },
-        { status: 400 }
-      );
+      return new Response(JSON.stringify({ error: 'msg is required and must be a string' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
-    // Check if OpenAI API key is configured
     const openaiKey = process.env.OPENAI_API_KEY;
 
     if (openaiKey) {
-      // === OPTION 1: OpenAI (ChatGPT) ===
-      try {
-        const openai = new OpenAI({
-          apiKey: openaiKey,
-        });
+      const openai = new OpenAI({ apiKey: openaiKey });
 
-        const completion = await openai.chat.completions.create({
-          model: 'gpt-4o-mini', // Oder 'gpt-4' für bessere Qualität
-          messages: [
-            {
-              role: 'system',
-              content: 'Du bist ein hilfreicher Assistent für Fragen zu Arbeitssicherheit und Gesundheitsschutz (DGUV). Antworte präzise und auf Deutsch.'
-            },
-            {
-              role: 'user',
-              content: msg
+      const stream = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+          {
+            role: 'system',
+            content: 'Du bist ein hilfreicher Assistent für Fragen zu Arbeitssicherheit und Gesundheitsschutz (DGUV). Antworte präzise und auf Deutsch.'
+          },
+          { role: 'user', content: msg }
+        ],
+        temperature: 0.7,
+        max_tokens: 1000,
+        stream: true,
+      });
+
+      const encoder = new TextEncoder();
+      const readable = new ReadableStream({
+        async start(controller) {
+          for await (const chunk of stream) {
+            const text = chunk.choices[0]?.delta?.content || '';
+            if (text) {
+              controller.enqueue(encoder.encode(text));
             }
-          ],
-          temperature: 0.7,
-          max_tokens: 1000,
-        });
+          }
+          controller.close();
+        },
+      });
 
-        const response = completion.choices[0]?.message?.content || 'Keine Antwort erhalten.';
-
-        return NextResponse.json({
-          msg: msg,
-          response: response,
-          language: language || 'de',
-          context: context
-        });
-      } catch (error: any) {
-        console.error('OpenAI API error:', error);
-        return NextResponse.json(
-          { error: 'OpenAI API error', msg: msg, response: 'Fehler bei der Kommunikation mit OpenAI.' },
-          { status: 500 }
-        );
-      }
+      return new Response(readable, {
+        headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+      });
     }
 
-    // Check for custom LLM backend
     const llmUrl = process.env.LLM_URL;
     const llmHeader = process.env.LLM_HEADER;
 
     if (llmUrl && llmHeader) {
-      // === OPTION 2: Custom LLM Backend ===
       const headers = JSON.parse(llmHeader);
 
       const llmResponse = await fetch(llmUrl, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...headers,
-        },
+        headers: { 'Content-Type': 'application/json', ...headers },
         body: JSON.stringify({ msg, context, language }),
       });
 
@@ -77,27 +66,48 @@ export async function POST(request: NextRequest) {
         throw new Error(`LLM API error: ${llmResponse.statusText}`);
       }
 
+      const contentType = llmResponse.headers.get('content-type') || '';
+      if (contentType.includes('text/') || contentType.includes('stream')) {
+        return new Response(llmResponse.body, {
+          headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+        });
+      }
+
       const data = await llmResponse.json();
-      return NextResponse.json(data);
+      const text = data.msg || data.response || '';
+      return new Response(text, {
+        headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+      });
     }
 
-    // === FALLBACK: Echo/Mock Mode ===
+    // Fallback echo mode — streamt Wort für Wort
     if (msg.includes('*waittesting*')) {
       await new Promise((resolve) => setTimeout(resolve, 35000));
     }
 
-    return NextResponse.json({
-      msg: msg,
-      response: `Echo: ${msg}`,
-      language: language || 'de',
-      context: context
+    const echoText = `Echo: ${msg}`;
+    const words = echoText.split(' ');
+    const encoder = new TextEncoder();
+    const readable = new ReadableStream({
+      async start(controller) {
+        for (let i = 0; i < words.length; i++) {
+          const chunk = i === 0 ? words[i] : ' ' + words[i];
+          controller.enqueue(encoder.encode(chunk));
+          await new Promise((resolve) => setTimeout(resolve, 80));
+        }
+        controller.close();
+      },
+    });
+
+    return new Response(readable, {
+      headers: { 'Content-Type': 'text/plain; charset=utf-8' },
     });
 
   } catch (error) {
     console.error('Chat API error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return new Response(JSON.stringify({ error: 'Internal server error' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 }
