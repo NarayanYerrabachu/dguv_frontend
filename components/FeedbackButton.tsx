@@ -1,9 +1,10 @@
 import Image from 'next/image';
+import { LINKS } from '@/lib/links';
 
 export default function FeedbackButton() {
   return (
     <a
-      href="https://befragungen.dguv.de/evasys/online.php?p=Chatbotfeedback_2026"
+      href={LINKS.feedback}
       target="_blank"
       rel="noopener noreferrer"
       title="Feedback geben"

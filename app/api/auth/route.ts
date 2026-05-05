@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
     const jwtExpiresIn = process.env.JWT_EXPIRES_IN || '8h';
 
     const accessToken = jwt.sign({ emmaId, email }, jwtSecret, {
-      expiresIn: jwtExpiresIn,
+      expiresIn: jwtExpiresIn as jwt.SignOptions['expiresIn'],
     });
 
     return NextResponse.json({

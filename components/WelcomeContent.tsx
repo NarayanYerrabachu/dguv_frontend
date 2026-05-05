@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import AvatarCircle from './AvatarCircle';
+import { LINKS } from '@/lib/links';
 
 export default function WelcomeContent() {
   const router = useRouter();
@@ -30,7 +31,7 @@ export default function WelcomeContent() {
           <br />
           Mit Beginn der Unterhaltung stimmen Sie meinen{' '}
           <a
-            href="https://dguv.de/medien/fb-bildungseinrichtungen/fb_bildung_neu/allgemeine-nutzungsbedingungen-dguv-chatbot-bildungseinrichtungen.pdf"
+            href={LINKS.nutzungsbedingungen}
             target="_blank"
             rel="noopener noreferrer"
             className="text-[#551A8B] underline"
@@ -42,7 +43,7 @@ export default function WelcomeContent() {
           Die Eingabe von personenbezogenen Daten ist zudem nicht gestattet.
           Bitte beachten Sie in diesem Zusammenhang auch meine{' '}
           <a
-            href="https://www.dguv.de/de/wir-ueber-uns/impressum/datenschutzerklaerung/datenschutz-bildungschat"
+            href={LINKS.datenschutz}
             target="_blank"
             rel="noopener noreferrer"
             className="text-[#551A8B] underline"
