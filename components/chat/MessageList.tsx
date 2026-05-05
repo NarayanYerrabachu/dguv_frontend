@@ -1,6 +1,6 @@
 import { RefObject } from "react";
 import ChatMessage from "./ChatMessage";
-import LoadingMessage from "./LoadingMessage";
+import LoadingDots from "./LoadingDots";
 import type { Message } from "@/components/ChatContent";
 
 interface MessageListProps {
@@ -26,7 +26,14 @@ export default function MessageList({
           />
         ))}
 
-        {isLoading && <LoadingMessage />}
+        {isLoading && (
+          <div className="flex items-start justify-start gap-3">
+            <div className="h-10 w-10 min-w-10 rounded-full bg-[#004994]" />
+            <div className="rounded-lg border border-gray-200 bg-white px-5 py-4 shadow-sm">
+              <LoadingDots />
+            </div>
+          </div>
+        )}
 
         <div ref={messagesEndRef} />
       </div>
