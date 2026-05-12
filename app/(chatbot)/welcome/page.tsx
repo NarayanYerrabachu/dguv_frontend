@@ -1,5 +1,5 @@
-import ContentCard from "@/components/ContentCard";
-import WelcomeContent from "@/components/WelcomeContent";
+import ContentCard from "@/components/welcome/ContentCard";
+import WelcomeContent from "@/components/welcome/WelcomeContent";
 
 export default function WelcomePage() {
   return (

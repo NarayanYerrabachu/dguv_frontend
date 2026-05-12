@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { ChangeEvent, FormEvent, KeyboardEvent } from "react";
-import type { Message } from "@/components/ChatContent";
+import type { Message } from "@/components/chat/ChatContent";
 
 export function useChatMessages() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -17,6 +17,7 @@ export function useChatMessages() {
 
   const addAudioMessage = (audioUrl: string) => {
     setMessages((prev) => [...prev, { role: "user", content: "", audioUrl }]);
+    setMessages((prev) => [...prev, { role: "assistant", content: "Ihre Sprachnachricht wurde empfangen. Vielen Dank!" }]);
   };
 
   const sendMessage = async () => {

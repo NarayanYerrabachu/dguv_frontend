@@ -33,7 +33,7 @@ export default function ChatInputArea({
             onKeyDown={onKeyDown}
           />
 
-          <SendButton disabled={!input.trim() || isLoading} />
+          <SendButton disabled={Boolean(!input.trim() || isLoading)} />
 
           <MicrophoneButton
             isRecording={isRecording}
