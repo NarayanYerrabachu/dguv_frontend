@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { LanguageProvider } from "@/context/LanguageContext";
 
 export const metadata: Metadata = {
   title: "DGUV App",
@@ -16,13 +17,15 @@ export default function RootLayout({
   return (
     <html lang="de">
       <body className="min-h-screen bg-white">
-        <Header />
+        <LanguageProvider>
+          <Header />
 
-        <main className="flex-1 flex items-center justify-center">
-          {children}
-        </main>
+          <main className="flex-1 flex items-center justify-center">
+            {children}
+          </main>
 
-        <Footer />
+          <Footer />
+        </LanguageProvider>
       </body>
     </html>
   );

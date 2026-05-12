@@ -3,9 +3,70 @@
 import { useRouter } from 'next/navigation';
 import AvatarCircle from './AvatarCircle';
 import { LINKS } from '@/lib/links';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function WelcomeContent() {
   const router = useRouter();
+  const { t, language } = useLanguage();
+
+  const legalText =
+    language === 'de' ? (
+      <p className="text-[16px] leading-[1.35] text-[#0050b5] mb-0 font-['Source_Sans_3']">
+        Bitte beachten Sie:
+        <br />
+        Mit Beginn der Unterhaltung stimmen Sie meinen{' '}
+        <a
+          href={LINKS.nutzungsbedingungen}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#551A8B] underline"
+        >
+          Nutzungsbedingungen
+        </a>{' '}
+        zu.
+        <br />
+        Die Eingabe von personenbezogenen Daten ist zudem nicht gestattet.
+        Bitte beachten Sie in diesem Zusammenhang auch meine{' '}
+        <a
+          href={LINKS.datenschutz}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#551A8B] underline"
+        >
+          Datenschutzerklärung
+        </a>
+        . Ich würde mich freuen, wenn Sie mir nach unserer Unterhaltung
+        ein Feedback zu Ihrer Benutzungserfahrung geben.
+      </p>
+    ) : (
+      <p className="text-[16px] leading-[1.35] text-[#0050b5] mb-0 font-['Source_Sans_3']">
+        Please note:
+        <br />
+        By starting the conversation, you agree to my{' '}
+        <a
+          href={LINKS.nutzungsbedingungen}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#551A8B] underline"
+        >
+          Terms of use
+        </a>
+        .
+        <br />
+        The entry of personal data is also not permitted. Please also refer to
+        my{' '}
+        <a
+          href={LINKS.datenschutz}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#551A8B] underline"
+        >
+          Privacy policy
+        </a>
+        . I would be happy if you gave me feedback on your experience after our
+        conversation.
+      </p>
+    );
 
   return (
     <>
@@ -13,53 +74,21 @@ export default function WelcomeContent() {
 
       <div className="mb-6">
         <p className="text-[18px] leading-[1.35] text-[#222] mb-4 font-['Source_Sans_3']">
-          Willkommen,
-          <br />
-          ich bin der Chatbot der DGUV zu dem Thema &bdquo;Sicherheit und
-          Gesundheit in Bildungseinrichtungen&ldquo;.
+          {t.welcome.title}
         </p>
 
         <p className="text-[18px] leading-[1.35] text-[#222] mb-4 font-['Source_Sans_3']">
-          Mein Wissen basiert auf der Expertise der gesetzlichen
-          Unfallversicherung. Stellen Sie mir gern Ihre Fragen! Da ich mir
-          unsere Unterhaltung nicht merke, benötige ich bei Rückfragen
-          genügend Kontext, um Ihre Frage gezielt beantworten zu können.
+          {t.welcome.description}
         </p>
 
-        <p className="text-[16px] leading-[1.35] text-[#0050b5] mb-0 font-['Source_Sans_3']">
-          Bitte beachten Sie:
-          <br />
-          Mit Beginn der Unterhaltung stimmen Sie meinen{' '}
-          <a
-            href={LINKS.nutzungsbedingungen}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[#551A8B] underline"
-          >
-            Nutzungsbedingungen
-          </a>{' '}
-          zu.
-          <br />
-          Die Eingabe von personenbezogenen Daten ist zudem nicht gestattet.
-          Bitte beachten Sie in diesem Zusammenhang auch meine{' '}
-          <a
-            href={LINKS.datenschutz}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[#551A8B] underline"
-          >
-            Datenschutzerklärung
-          </a>
-          . Ich würde mich freuen, wenn Sie mir nach unserer Unterhaltung
-          ein Feedback zu Ihrer Benutzungserfahrung geben.
-        </p>
+        {legalText}
       </div>
 
       <button
         onClick={() => router.push('/chat')}
         className="w-80 h-[50px] mx-auto flex items-center justify-center gap-3 bg-[#b6d900] text-black text-[20px] font-semibold cursor-pointer transition-transform hover:scale-105"
       >
-        <span>Dialog starten</span>
+        <span>{t.welcome.startButton}</span>
 
         <svg
           xmlns="http://www.w3.org/2000/svg"

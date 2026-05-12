@@ -3,11 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import type { ChangeEvent, FormEvent, KeyboardEvent } from "react";
 import type { Message } from "@/components/chat/ChatContent";
+import { useLanguage } from "@/context/LanguageContext";
 
 export function useChatMessages() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { language, t } = useLanguage();
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -17,7 +19,7 @@ export function useChatMessages() {
 
   const addAudioMessage = (audioUrl: string) => {
     setMessages((prev) => [...prev, { role: "user", content: "", audioUrl }]);
-    setMessages((prev) => [...prev, { role: "assistant", content: "Ihre Sprachnachricht wurde empfangen. Vielen Dank!" }]);
+    setMessages((prev) => [...prev, { role: "assistant", content: t.chat.audioReceived }]);
   };
 
   const sendMessage = async () => {
@@ -32,7 +34,7 @@ export function useChatMessages() {
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ msg: currentInput, language: "de" }),
+        body: JSON.stringify({ msg: currentInput, language }),
       });
 
       if (!response.ok || !response.body) {
@@ -59,7 +61,7 @@ export function useChatMessages() {
       console.error("Error:", error);
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: "Fehler bei der Verbindung zum Server." },
+        { role: "assistant", content: t.chat.connectionError },
       ]);
     } finally {
       setIsLoading(false);
