@@ -1,7 +1,4 @@
-"use client";
-
 import Image from "next/image";
-import { useLanguage } from "@/context/LanguageContext";
 
 interface MicrophoneButtonProps {
   isRecording: boolean;
@@ -12,8 +9,6 @@ export default function MicrophoneButton({
   isRecording,
   onClick,
 }: MicrophoneButtonProps) {
-  const { t } = useLanguage();
-
   return (
     <button
       type="button"
@@ -21,7 +16,7 @@ export default function MicrophoneButton({
       className={`flex hover:bg-[#d8eeff] h-9 w-9 shrink-0 items-center justify-center rounded-lg border-none shadow-sm transition-all duration-200 sm:h-12 sm:w-12 ${
         isRecording ? "bg-[rgba(220,50,50,0.1)]" : "bg-white"
       } cursor-pointer`}
-      title={isRecording ? t.chat.stopRecording : t.chat.startRecording}
+      title={isRecording ? "Aufnahme stoppen" : "Sprachaufnahme starten"}
     >
       {isRecording ? (
         <span className="h-3 w-3 rounded-sm bg-red-500 sm:h-4 sm:w-4" />

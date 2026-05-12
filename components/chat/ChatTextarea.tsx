@@ -1,7 +1,3 @@
-"use client";
-
-import { useLanguage } from "@/context/LanguageContext";
-
 interface ChatTextareaProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
@@ -9,15 +5,13 @@ interface ChatTextareaProps {
 }
 
 export default function ChatTextarea({ value, onChange, onKeyDown }: ChatTextareaProps) {
-  const { t } = useLanguage();
-
   return (
     <textarea
       value={value}
       onChange={onChange}
       onKeyDown={onKeyDown}
       autoComplete="off"
-      placeholder={t.chat.placeholder}
+      placeholder="Stellen Sie mir eine Frage."
       rows={1}
       className="min-h-10 min-w-0 max-h-30 flex-1 resize-none rounded-lg border-none bg-white px-3 py-2 text-sm leading-normal text-[#003366] shadow-sm outline-none sm:min-h-12 sm:px-4 sm:py-3 sm:text-base font-['Source_Sans_3',ui-sans-serif,system-ui,sans-serif]"
     />
