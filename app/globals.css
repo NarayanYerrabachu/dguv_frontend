@@ -45,3 +45,27 @@
   animation: slide-up-fade 0.45s ease-out both;
 }
 
+@keyframes recordingBox {
+  0% {
+    background-color: #f0f8ff;
+    border-top-color: transparent;
+    box-shadow: 0 2px 6px rgba(216, 239, 255, 0.3);
+  }
+  50% {
+    background-color: #daeeff;
+    border-top-color: #b8d9f5;
+    box-shadow: 0 -3px 10px rgba(184, 217, 245, 0.35), 0 3px 10px rgba(184, 217, 245, 0.2);
+  }
+  100% {
+    background-color: #f0f8ff;
+    border-top-color: transparent;
+    box-shadow: 0 2px 6px rgba(216, 239, 255, 0.3);
+  }
+}
+
+@keyframes recordingDot {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.2); }
+  100% { transform: scale(1); }
+}
+
