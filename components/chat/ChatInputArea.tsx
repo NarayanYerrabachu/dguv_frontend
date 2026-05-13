@@ -24,7 +24,7 @@ export default function ChatInputArea({
   onMicrophoneClick,
 }: ChatInputAreaProps) {
   return (
-    <footer className="w-full shrink-0 border-t border-gray-200 pt-3 sm:pt-4">
+    <footer className="animate-slide-up-fade w-full shrink-0 border-t border-gray-200 pt-3 sm:pt-4">
       <form onSubmit={onSubmit}>
         <div className="flex w-full items-end gap-1.5 sm:gap-2">
           <ChatTextarea

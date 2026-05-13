@@ -30,3 +30,18 @@
   background: #2f8fbd;
 }
 
+@keyframes slide-up-fade {
+  from {
+    opacity: 0;
+    transform: translateY(2cm);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up-fade {
+  animation: slide-up-fade 0.45s ease-out both;
+}
+
