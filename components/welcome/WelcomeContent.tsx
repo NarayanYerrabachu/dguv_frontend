@@ -27,7 +27,7 @@ export default function WelcomeContent() {
           genügend Kontext, um Ihre Frage gezielt beantworten zu können.
         </p>
 
-        <p className="text-[14px] leading-[1.35] text-[#386ba7] mb-0 font-['Source_Sans_3']">
+        <p className="text-[16px] leading-[1.35] text-[#386ba7] mb-0 font-['Source_Sans_3']">
 
           Bitte beachten Sie:
           <br />
