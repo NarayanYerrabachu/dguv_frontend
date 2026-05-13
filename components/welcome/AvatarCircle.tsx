@@ -2,12 +2,12 @@ import Image from 'next/image';
 
 export default function AvatarCircle() {
   return (
-    <div className="absolute left-1/2 -top-12 -translate-x-1/2 w-24 h-24 rounded-full bg-[#00549f] flex items-center justify-center shadow-[4px_4px_8px_rgba(0,0,0,0.3)] z-10">
+    <div className="absolute left-1/2 -top-12 -translate-x-1/2 w-28 h-28 rounded-full bg-[#00549f] flex items-center justify-center shadow-[4px_4px_8px_rgba(0,0,0,0.3)] z-10">
       <Image
         src="/chats-circle.svg"
         alt="Chat"
-        width={52}
-        height={52}
+        width={58}
+        height={58}
         priority
         className="brightness-0 invert"
       />
