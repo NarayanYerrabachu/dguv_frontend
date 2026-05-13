@@ -27,6 +27,7 @@ export default function WelcomeContent() {
         </p>
 
         <p className="text-[16px] leading-[1.35] text-[#0050b5] mb-0 font-['Source_Sans_3']">
+          
           Bitte beachten Sie:
           <br />
           Mit Beginn der Unterhaltung stimmen Sie meinen{' '}
@@ -57,7 +58,7 @@ export default function WelcomeContent() {
 
       <button
         onClick={() => router.push('/chat')}
-        className="w-80 h-[50px] mx-auto flex items-center justify-center gap-3 bg-[#b6d900] text-black text-[20px] font-semibold cursor-pointer transition-transform hover:scale-105"
+        className="w-80 h-12 mx-auto flex items-center justify-center gap-3 bg-[#b6d900] text-black text-[20px] font-semibold cursor-pointer transition-transform hover:scale-105"
       >
         <span>Dialog starten</span>
 
