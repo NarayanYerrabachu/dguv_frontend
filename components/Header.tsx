@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 export default function Header() {
   return (
-    <header className="fixed top-0 left-0 right-0 h-32 bg-white px-6 flex items-center z-50">
+    <header className="fixed top-0 left-0 right-0 h-26 bg-white px-6 flex items-center z-50">
       <div className="ml-10 flex items-center">
         <Image
           src="/logo-dguv-rgb.svg"

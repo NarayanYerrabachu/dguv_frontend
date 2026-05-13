@@ -11,7 +11,6 @@ export default function ChatbotLayout({
       <div className="flex min-h-0 flex-1 flex-col items-center justify-center">
         {children}
       </div>
-
       <FeedbackButton />
     </BlueBox>
   );
