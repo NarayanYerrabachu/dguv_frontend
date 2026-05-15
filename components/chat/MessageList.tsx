@@ -22,7 +22,7 @@ export default function MessageList({
             key={index}
             role={message.role}
             content={message.content}
-            audioUrl={message.audioUrl}
+
           />
         ))}
 

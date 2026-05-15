@@ -1,10 +1,9 @@
 interface ChatMessageProps {
   role: "user" | "assistant";
   content: string;
-  audioUrl?: string;
 }
 
-export default function ChatMessage({ role, content, audioUrl }: ChatMessageProps) {
+export default function ChatMessage({ role, content }: ChatMessageProps) {
   const isUser = role === "user";
 
   return (
@@ -20,11 +19,7 @@ export default function ChatMessage({ role, content, audioUrl }: ChatMessageProp
             : "border border-gray-200 bg-white text-[#333333] shadow-sm"
         }`}
       >
-        {audioUrl ? (
-          <audio controls src={audioUrl} className="w-full max-w-40" />
-        ) : (
-          <p className="m-0 whitespace-pre-wrap">{content}</p>
-        )}
+        <p className="m-0 whitespace-pre-wrap">{content}</p>
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ interface ChatInputAreaProps {
   input: string;
   isLoading: boolean;
   isRecording: boolean;
+  isTranscribing: boolean;
   onInputChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
   onKeyDown: (e: KeyboardEvent<HTMLTextAreaElement>) => void;
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
@@ -18,6 +19,7 @@ export default function ChatInputArea({
   input,
   isLoading,
   isRecording,
+  isTranscribing,
   onInputChange,
   onKeyDown,
   onSubmit,
@@ -39,6 +41,13 @@ export default function ChatInputArea({
           >
             <span className="h-3 w-3 rounded-sm bg-[#004994]" />
           </button>
+        </div>
+      ) : isTranscribing ? (
+        <div className="flex w-full items-center gap-3 rounded-lg border-t border-transparent bg-[#f0f7ff] px-4 shadow-sm min-h-10 sm:min-h-12">
+          <span className="h-3 w-3 shrink-0 rounded-full bg-blue-400 animate-pulse" />
+          <span className="flex-1 text-sm sm:text-base text-[#003366] font-['Source_Sans_3',ui-sans-serif,system-ui,sans-serif]">
+            Spracherkennung läuft...
+          </span>
         </div>
       ) : (
         <form onSubmit={onSubmit}>

@@ -15,9 +15,8 @@ export function useChatMessages() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const addAudioMessage = (audioUrl: string) => {
-    setMessages((prev) => [...prev, { role: "user", content: "", audioUrl }]);
-    setMessages((prev) => [...prev, { role: "assistant", content: "Ihre Sprachnachricht wurde empfangen. Vielen Dank!" }]);
+  const setTranscribedText = (text: string) => {
+    setInput(text);
   };
 
   const sendMessage = async () => {
@@ -87,7 +86,7 @@ export function useChatMessages() {
     input,
     isLoading,
     messagesEndRef,
-    addAudioMessage,
+    setTranscribedText,
     handleSubmit,
     handleKeyDown,
     handleInputChange,

@@ -9,7 +9,6 @@ import { useChatMessages } from "@/hooks/useChatMessages";
 export type Message = {
   role: "user" | "assistant";
   content: string;
-  audioUrl?: string;
 };
 
 export default function ChatContent() {
@@ -18,14 +17,14 @@ export default function ChatContent() {
     input,
     isLoading,
     messagesEndRef,
-    addAudioMessage,
+    setTranscribedText,
     handleSubmit,
     handleKeyDown,
     handleInputChange,
   } = useChatMessages();
 
-  const { isRecording, toggleRecording } = useAudioRecorder({
-    onRecordingComplete: addAudioMessage,
+  const { isRecording, isTranscribing, toggleRecording } = useAudioRecorder({
+    onTranscriptionComplete: setTranscribedText,
   });
 
   const hasMessages = messages.length > 0;
@@ -34,6 +33,7 @@ export default function ChatContent() {
     input,
     isLoading,
     isRecording,
+    isTranscribing,
     onInputChange: handleInputChange,
     onKeyDown: handleKeyDown,
     onSubmit: handleSubmit,
