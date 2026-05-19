@@ -19,7 +19,7 @@ export default function ChatMessage({ role, content }: ChatMessageProps) {
             : "border border-gray-200 bg-white text-[#333333] shadow-sm"
         }`}
       >
-        <p className="m-0 whitespace-pre-wrap">{content}</p>
+        <p className="m-0 whitespace-pre-wrap break-words">{content}</p>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type UseAudioRecorderOptions = {
   onTranscriptionComplete?: (text: string) => void;
@@ -218,6 +218,16 @@ function useBackendTranscription(options: UseAudioRecorderOptions) {
     if (isRecording) stopRecording();
     else startRecording();
   };
+
+  useEffect(() => {
+    return () => {
+      cancelSilenceTimer();
+      cancelAnimationLoop();
+      if (maxDurationTimerRef.current) clearTimeout(maxDurationTimerRef.current);
+      if (streamRef.current) streamRef.current.getTracks().forEach((t) => t.stop());
+      if (audioContextRef.current) audioContextRef.current.close();
+    };
+  }, []);
 
   return { isRecording, isTranscribing, toggleRecording };
 }

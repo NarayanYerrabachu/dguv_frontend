@@ -28,11 +28,16 @@ async function streamLLMBackend(
   url: string,
   header: string
 ): Promise<Response> {
-  const headers = JSON.parse(header);
+  let parsedHeaders: Record<string, string>;
+  try {
+    parsedHeaders = JSON.parse(header);
+  } catch {
+    throw new Error('Invalid LLM_HEADER: must be valid JSON');
+  }
 
   const llmResponse = await fetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...headers },
+    headers: { 'Content-Type': 'application/json', ...parsedHeaders },
     body: JSON.stringify({ msg, context, language }),
   });
 
@@ -73,7 +78,7 @@ export async function POST(request: NextRequest) {
       return await streamLLMBackend(msg, context, language, llmUrl, llmHeader);
     }
 
-    if (msg.includes('*waittesting*')) {
+    if (process.env.NODE_ENV === 'development' && msg.includes('*waittesting*')) {
       await new Promise((resolve) => setTimeout(resolve, 35000));
     }
 

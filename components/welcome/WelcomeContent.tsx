@@ -13,14 +13,14 @@ export default function WelcomeContent() {
       <AvatarCircle />
 
       <div className="mb-6">
-        <p className="text-[18px] leading-[1.35] text-[#222] mb-4 font-['Source_Sans_3']">
+        <p className="text-[18px] leading-[1.35] text-[#003366] mb-4 font-['Source_Sans_3']">
           Willkommen,
           <br />
           ich bin der Chatbot der DGUV zu dem Thema &bdquo;Sicherheit und
           Gesundheit in Bildungseinrichtungen&ldquo;.
         </p>
 
-        <p className="text-[18px] leading-[1.35] text-[#222] mb-4 font-['Source_Sans_3']">
+        <p className="text-[18px] leading-[1.35] text-[#003366] mb-4 font-['Source_Sans_3']">
           Mein Wissen basiert auf der Expertise der gesetzlichen
           Unfallversicherung. Stellen Sie mir gern Ihre Fragen! Da ich mir
           unsere Unterhaltung nicht merke, benötige ich bei Rückfragen

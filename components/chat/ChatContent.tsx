@@ -7,6 +7,7 @@ import { useAudioRecorder } from "@/hooks/useAudioRecorder";
 import { useChatMessages } from "@/hooks/useChatMessages";
 
 export type Message = {
+  id: string;
   role: "user" | "assistant";
   content: string;
 };
@@ -16,6 +17,7 @@ export default function ChatContent() {
     messages,
     input,
     isLoading,
+    waitingPhrase,
     messagesEndRef,
     setTranscribedText,
     handleSubmit,
@@ -47,6 +49,7 @@ export default function ChatContent() {
           <MessageList
             messages={messages}
             isLoading={isLoading}
+            waitingPhrase={waitingPhrase}
             messagesEndRef={messagesEndRef}
           />
           <ChatInputArea {...inputProps} />

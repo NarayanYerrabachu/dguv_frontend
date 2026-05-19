@@ -7,6 +7,7 @@ export default function FeedbackButton() {
       href={LINKS.feedback}
       target="_blank"
       rel="noopener noreferrer"
+      aria-label="Feedback geben"
       title="Feedback geben"
       className="group fixed right-1 top-1/2 -translate-y-1/2 w-20 h-23 border 
       border-[#c8d3df] rounded-lg flex flex-col items-center justify-center 

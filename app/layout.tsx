@@ -4,8 +4,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "dguv-chat",
-  description: "Next.js App",
+  title: "DGUV Bildungschat – Sicherheit & Gesundheit",
+  description: "Chatbot der DGUV zu Sicherheit und Gesundheit in Bildungseinrichtungen",
 };
 
 export default function RootLayout({

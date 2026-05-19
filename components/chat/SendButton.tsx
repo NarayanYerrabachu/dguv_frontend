@@ -14,6 +14,7 @@ export default function SendButton({ disabled }: SendButtonProps) {
       className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border-none bg-white shadow-sm transition-all duration-200 sm:h-12 sm:w-12 ${
         disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"
       }`}
+      aria-label="Nachricht senden"
       title="Senden"
     >
       <Image

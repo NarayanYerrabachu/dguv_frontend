@@ -28,7 +28,7 @@ export default function ChatInputArea({
   return (
     <footer className="animate-slide-up-fade w-full shrink-0 border-t border-gray-200 pt-3 sm:pt-4">
       {isRecording ? (
-        <div className="flex w-full items-center gap-3 rounded-lg border-t border-transparent bg-[#d8efff] px-4 shadow-sm min-h-10 sm:min-h-12 animate-[recordingBox_1.4s_ease-in-out_infinite]">
+        <div className="flex w-full items-center gap-3 rounded-lg border-t border-transparent bg-[#d8eefc] px-4 shadow-sm min-h-10 sm:min-h-12 animate-[recordingBox_1.4s_ease-in-out_infinite]">
           <span className="h-3 w-3 shrink-0 rounded-full bg-red-500 animate-[recordingDot_1s_ease-in-out_infinite]" />
           <span className="flex-1 text-sm sm:text-base text-[#003366] font-['Source_Sans_3',ui-sans-serif,system-ui,sans-serif]">
             Aufnahme läuft...
