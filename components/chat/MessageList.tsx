@@ -26,6 +26,8 @@ export default function MessageList({
             key={message.id}
             role={message.role}
             content={message.content}
+            sources={message.sources}
+            isError={message.isError}
           />
         ))}
 

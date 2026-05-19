@@ -6,10 +6,17 @@ import ChatInputArea from "@/components/chat/ChatInputArea";
 import { useAudioRecorder } from "@/hooks/useAudioRecorder";
 import { useChatMessages } from "@/hooks/useChatMessages";
 
+export type Source = {
+  title: string;
+  url?: string;
+};
+
 export type Message = {
   id: string;
   role: "user" | "assistant";
   content: string;
+  sources?: Source[];
+  isError?: boolean;
 };
 
 export default function ChatContent() {
