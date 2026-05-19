@@ -1,39 +1,66 @@
 @import "tailwindcss";
 
-/* Scrollbar style for the chat message area */
+/* ── Chat-Nachrichten Scrollbar ── */
 .chat-scrollbar {
-  /* Firefox scrollbar styling */
   scrollbar-width: thin;
-  scrollbar-color: #4fa3d1 #fcd8d8;
+  scrollbar-color: rgba(0, 73, 148, .2) #d8eefc;
 }
 
-/* Scrollbar width for Chrome, Edge, and Safari */
 .chat-scrollbar::-webkit-scrollbar {
   width: 10px;
 }
 
-/* Scrollbar background track */
 .chat-scrollbar::-webkit-scrollbar-track {
   background: #d8eefc;
   border-radius: 9999px;
 }
 
-/* Draggable scrollbar handle */
 .chat-scrollbar::-webkit-scrollbar-thumb {
-  background: #4fa3d1;
+  background: rgba(0, 73, 148, .2);
   border-radius: 9999px;
   border: 2px solid #d8eefc;
 }
 
-/* Hover state for the scrollbar handle */
 .chat-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #2f8fbd;
+  background: #004994;
+}
+
+/* ── Textarea Scrollbar ── */
+.textarea-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 73, 148, .2) transparent;
+}
+
+.textarea-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.textarea-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 9999px;
+}
+
+.textarea-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 73, 148, .2);
+  border-radius: 9999px;
+}
+
+.textarea-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #004994;
+}
+
+/* ── Chat Input (clamp values not possible in Tailwind) ── */
+.chat-input {
+  field-sizing: content;
+  padding: .375rem clamp(.75rem, 1.5vw, 1rem);
+  font-size: clamp(.8125rem, 1.3vh, .9375rem);
+  font-family: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 @keyframes slide-up-fade {
   from {
     opacity: 0;
-    transform: translateY(2cm);
+    transform: translateY(60px);
   }
   to {
     opacity: 1;
@@ -43,6 +70,21 @@
 
 .animate-slide-up-fade {
   animation: slide-up-fade 0.45s ease-out both;
+}
+
+@keyframes typingDot {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.4;
+  }
+  40% {
+    transform: translateY(-8px) scale(1.2);
+    opacity: 1;
+  }
+  60% {
+    transform: translateY(-8px) scale(1.2);
+    opacity: 1;
+  }
 }
 
 @keyframes recordingBox {
@@ -68,4 +110,3 @@
   50% { transform: scale(0.2); }
   100% { transform: scale(1); }
 }
-
