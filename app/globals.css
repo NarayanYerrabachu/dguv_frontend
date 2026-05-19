@@ -1,52 +1,33 @@
 @import "tailwindcss";
 
-/* ── Chat-Nachrichten Scrollbar ── */
+/* Scrollbar style for the chat message area */
 .chat-scrollbar {
+  /* Firefox scrollbar styling */
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 73, 148, .2) #d8eefc;
+  scrollbar-color: #4fa3d1 #fcd8d8;
 }
 
+/* Scrollbar width for Chrome, Edge, and Safari */
 .chat-scrollbar::-webkit-scrollbar {
   width: 10px;
 }
 
+/* Scrollbar background track */
 .chat-scrollbar::-webkit-scrollbar-track {
   background: #d8eefc;
   border-radius: 9999px;
 }
 
+/* Draggable scrollbar handle */
 .chat-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(0, 73, 148, .2);
+  background: #4fa3d1;
   border-radius: 9999px;
   border: 2px solid #d8eefc;
 }
 
+/* Hover state for the scrollbar handle */
 .chat-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #004994;
-}
-
-/* ── Textarea Scrollbar ── */
-.textarea-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(0, 73, 148, .2) #ffffff;
-}
-
-.textarea-scrollbar::-webkit-scrollbar {
-  width: 6px;
-}
-
-.textarea-scrollbar::-webkit-scrollbar-track {
-  background: #ffffff;
-  border-radius: 9999px;
-}
-
-.textarea-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(0, 73, 148, .2);
-  border-radius: 9999px;
-}
-
-.textarea-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #004994;
+  background: #2f8fbd;
 }
 
 @keyframes slide-up-fade {
@@ -88,17 +69,3 @@
   100% { transform: scale(1); }
 }
 
-@keyframes typingDot {
-  0%, 100% {
-    transform: translateY(0) scale(1);
-    opacity: 0.4;
-  }
-  40% {
-    transform: translateY(-8px) scale(1.2);
-    opacity: 1;
-  }
-  60% {
-    transform: translateY(-8px) scale(1.2);
-    opacity: 1;
-  }
-}

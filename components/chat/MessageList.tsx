@@ -8,6 +8,7 @@ interface MessageListProps {
   isLoading: boolean;
   waitingPhrase: string | null;
   messagesEndRef: RefObject<HTMLDivElement | null>;
+  hidden?: boolean;
 }
 
 export default function MessageList({
@@ -15,9 +16,10 @@ export default function MessageList({
   isLoading,
   waitingPhrase,
   messagesEndRef,
+  hidden = false,
 }: MessageListProps) {
   return (
-    <main className="chat-scrollbar min-h-0 flex-1 overflow-y-auto px-1 py-3 sm:px-4 sm:py-6">
+    <main className={`chat-scrollbar min-h-0 flex-1 overflow-y-auto px-1 py-6 sm:px-4 sm:py-10 ${hidden ? "hidden" : ""}`}>
       <div className="flex w-full flex-col gap-4">
         {messages.map((message) => (
           <ChatMessage

@@ -13,7 +13,7 @@ export default function ChatMessage({ role, content }: ChatMessageProps) {
       }`}
     >
       <div
-        className={`max-w-[calc(100%-56px)] rounded-lg px-5 py-4 text-[0.9375rem] leading-[1.6] font-['Source_Sans_3',ui-sans-serif,system-ui,sans-serif] ${
+        className={`max-w-[calc(100%-56px)] rounded-none px-5 py-4 text-[0.9375rem] leading-[1.6] font-['Source_Sans_3',ui-sans-serif,system-ui,sans-serif] ${
           isUser
             ? "bg-[#004994] text-white"
             : "border border-gray-200 bg-white text-[#333333] shadow-sm"

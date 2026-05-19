@@ -4,8 +4,13 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "DGUV Bildungschat – Sicherheit & Gesundheit",
+  title: "dguv-chat",
   description: "Chatbot der DGUV zu Sicherheit und Gesundheit in Bildungseinrichtungen",
+  icons: {
+    icon: [
+      { url: "/icon.png", type: "image/png", sizes: "32x32" },
+    ],
+  },
 };
 
 export default function RootLayout({

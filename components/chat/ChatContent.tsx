@@ -44,23 +44,18 @@ export default function ChatContent() {
 
   return (
     <ChatLayout>
-      {hasMessages ? (
-        <>
-          <MessageList
-            messages={messages}
-            isLoading={isLoading}
-            waitingPhrase={waitingPhrase}
-            messagesEndRef={messagesEndRef}
-          />
+      <MessageList
+        messages={messages}
+        isLoading={isLoading}
+        waitingPhrase={waitingPhrase}
+        messagesEndRef={messagesEndRef}
+        hidden={!hasMessages}
+      />
+      <div className={!hasMessages ? "flex flex-1 items-center justify-center" : ""}>
+        <div className={!hasMessages ? "w-full max-w-440" : ""}>
           <ChatInputArea {...inputProps} />
-        </>
-      ) : (
-        <div className="flex flex-1 items-center justify-center">
-          <div className="w-full max-w-440">
-            <ChatInputArea {...inputProps} />
-          </div>
         </div>
-      )}
+      </div>
     </ChatLayout>
   );
 }
