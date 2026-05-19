@@ -1,0 +1,30 @@
+trigger:
+    branches:
+        include:
+            - main
+            - releases/*
+            - refs/tags/{tagname}
+    paths:
+        exclude:
+            - docs/
+
+variables:
+    - group: devops
+    - name: PROJECT_NAME
+      value: 'dguv_frontend'
+
+name: $(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)
+
+resources:
+    repositories:
+        - repository: ci_cd_templates
+          type: git
+          name: EMMA/ci_cd_templates
+
+stages:
+    - template: test-npm.yml@ci_cd_templates
+      parameters:
+          NODE_VERSION: '22'
+    - template: build-npm.yml@ci_cd_templates
+      parameters:
+          DOCKERFILE: Dockerfile.build
