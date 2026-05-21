@@ -94,6 +94,7 @@ async function sseFromLLMBackend(
 }
 
 export async function POST(request: NextRequest) {
+  const startMs = Date.now();
   try {
     const body = await request.json();
     const { msg, context, language } = body;
@@ -110,16 +111,20 @@ export async function POST(request: NextRequest) {
 
     if (llmUrl && llmHeader) {
       const streamUrl = llmUrl.replace(/\/chat$/, '/chat/stream');
-      return await sseFromLLMBackend(msg, context, language, streamUrl, llmHeader);
+      console.log(`[chat/stream] → backend: ${streamUrl} | msg: "${msg.slice(0, 80)}"${language ? ` | lang: ${language}` : ''}`);
+      const response = await sseFromLLMBackend(msg, context, language, streamUrl, llmHeader);
+      console.log(`[chat/stream] ✓ backend responded (${Date.now() - startMs}ms)`);
+      return response;
     }
 
     if (process.env.NODE_ENV === 'development' && msg.includes('*waittesting*')) {
       await new Promise((r) => setTimeout(r, 35000));
     }
 
+    console.log(`[chat/stream] echo-modus | msg: "${msg.slice(0, 80)}"`);
     return sseEcho(msg);
   } catch (error) {
-    console.error('Chat stream API error:', error);
+    console.error(`[chat/stream] ✗ Fehler (${Date.now() - startMs}ms):`, error);
     return new Response(JSON.stringify({ error: 'Internal server error' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
