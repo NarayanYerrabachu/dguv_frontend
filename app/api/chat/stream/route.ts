@@ -43,6 +43,7 @@ async function sseFromLLMBackend(
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...parsedHeaders },
     body: JSON.stringify({ msg, context, language }),
+    signal: AbortSignal.timeout(60_000),
   });
 
   if (!llmResponse.ok) {
@@ -110,7 +111,15 @@ export async function POST(request: NextRequest) {
     const llmUrl = process.env.LLM_URL;
     const llmHeader = process.env.LLM_HEADER;
 
-    const streamUrl = llmStreamUrl || (llmUrl ? llmUrl.replace(/\/chat$/, '/chat/stream') : null);
+    let streamUrl: string | null = llmStreamUrl ?? null;
+    if (!streamUrl && llmUrl) {
+      const derived = llmUrl.replace(/\/chat\/?$/, '/chat/stream');
+      if (derived !== llmUrl) {
+        streamUrl = derived;
+      } else {
+        console.warn('[chat/stream] LLM_URL does not end with /chat — set LLM_STREAM_URL explicitly');
+      }
+    }
 
     if (streamUrl && llmHeader) {
       console.log(`[chat/stream] → backend: ${streamUrl} | msg: "${msg.slice(0, 80)}"${language ? ` | lang: ${language}` : ''}`);

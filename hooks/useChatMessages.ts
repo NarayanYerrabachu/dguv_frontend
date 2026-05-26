@@ -66,6 +66,7 @@ export function useChatMessages() {
 
   // ── SSE streaming via /api/chat/stream ──────────────────────────────────────
   const sendViaSSE = async (msg: string): Promise<boolean> => {
+    let reader: ReadableStreamDefaultReader | null = null;
     try {
       const response = await fetch("/api/chat/stream", {
         method: "POST",
@@ -75,10 +76,11 @@ export function useChatMessages() {
 
       if (!response.ok || !response.body) return false;
 
+      // Only append the assistant bubble once we know the stream is open
       clearWaitingTimeouts();
       appendAssistantMessage();
 
-      const reader = response.body.getReader();
+      reader = response.body.getReader();
       readerRef.current = reader;
       const decoder = new TextDecoder();
       let buffer = "";
@@ -117,8 +119,16 @@ export function useChatMessages() {
             const sources = (parsed.sources ?? []) as Source[];
             if (sources.length > 0) updateLastMessage({ sources });
           } else if (eventType === "error") {
-            const message = (parsed.message as string) || ERROR_MESSAGE;
-            updateLastMessage({ isError: true, content: (prev => prev + (prev ? "\n\n" : "") + message)("") });
+            const errorText = (parsed.message as string) || ERROR_MESSAGE;
+            // Use functional update to append to existing partial content
+            setMessages((prev) => {
+              const updated = [...prev];
+              const last = updated[updated.length - 1];
+              if (!last || last.role !== "assistant") return prev;
+              const prefix = last.content ? last.content + "\n\n" : "";
+              updated[updated.length - 1] = { ...last, isError: true, content: prefix + errorText };
+              return updated;
+            });
           }
         }
       }
@@ -126,7 +136,14 @@ export function useChatMessages() {
       readerRef.current = null;
       return true;
     } catch {
+      await reader?.cancel();
       readerRef.current = null;
+      // Remove the orphaned assistant bubble if it was added before the failure
+      setMessages((prev) => {
+        const last = prev[prev.length - 1];
+        if (last?.role === "assistant" && last.content === "") return prev.slice(0, -1);
+        return prev;
+      });
       return false;
     }
   };
@@ -179,7 +196,7 @@ export function useChatMessages() {
     try {
       const sseSuccess = await sendViaSSE(currentInput);
       if (!sseSuccess) {
-        clearWaitingTimeouts();
+        startWaitingPhrases();
         await sendViaFallback(currentInput);
       }
     } catch (error) {
