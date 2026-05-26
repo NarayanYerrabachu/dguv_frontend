@@ -34,13 +34,16 @@ export async function POST(request: NextRequest) {
     const sttToken = process.env.STT_TOKEN ?? '';
 
     if (sttUrl) {
+      console.log(`[transcription] → backend: ${sttUrl} | Datei: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`);
       const text = await transcribeWithBackend(file, sttUrl, sttToken);
+      console.log(`[transcription] ✓ Ergebnis: "${text.slice(0, 100)}"`);
       return Response.json({ text });
     }
 
+    console.log('[transcription] mock-modus (STT_URL nicht konfiguriert)');
     return Response.json({ text: 'Das ist eine Testtranskription. (Mock-Modus — STT_URL nicht konfiguriert)' });
   } catch (error) {
-    console.error('Transcription API error:', error);
+    console.error('[transcription] ✗ Fehler:', error);
     return Response.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

@@ -26,19 +26,18 @@ export default function MessageList({
             key={message.id}
             role={message.role}
             content={message.content}
+            sources={message.sources}
+            isError={message.isError}
           />
         ))}
 
         {isLoading && (
-          <div className="flex items-start justify-start gap-3">
-            <div className="h-10 w-10 min-w-10 rounded-full bg-[#004994]" />
-            <div className="rounded-lg border border-gray-200 bg-white px-5 py-4 shadow-sm">
-              {waitingPhrase ? (
-                <p className="m-0 text-sm text-[#333333] font-['Source_Sans_3',ui-sans-serif,system-ui,sans-serif]">
-                  {waitingPhrase}
-                </p>
-              ) : (
-                <LoadingDots />
+          <div className="flex items-start gap-3 justify-start">
+            <div className="max-w-[calc(100%-56px)] rounded-none px-5 py-4 text-[0.9375rem] leading-[1.6] font-['Source_Sans_3',ui-sans-serif,system-ui,sans-serif] border border-gray-200 bg-white text-[#333333] shadow-sm flex flex-col gap-2">
+              <LoadingDots />
+              
+              {waitingPhrase && (
+                <span className="text-sm text-[#333333]">{waitingPhrase}</span>
               )}
             </div>
           </div>
