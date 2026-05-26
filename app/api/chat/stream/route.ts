@@ -106,11 +106,13 @@ export async function POST(request: NextRequest) {
       });
     }
 
+    const llmStreamUrl = process.env.LLM_STREAM_URL;
     const llmUrl = process.env.LLM_URL;
     const llmHeader = process.env.LLM_HEADER;
 
-    if (llmUrl && llmHeader) {
-      const streamUrl = llmUrl.replace(/\/chat$/, '/chat/stream');
+    const streamUrl = llmStreamUrl || (llmUrl ? llmUrl.replace(/\/chat$/, '/chat/stream') : null);
+
+    if (streamUrl && llmHeader) {
       console.log(`[chat/stream] → backend: ${streamUrl} | msg: "${msg.slice(0, 80)}"${language ? ` | lang: ${language}` : ''}`);
       const response = await sseFromLLMBackend(msg, context, language, streamUrl, llmHeader);
       console.log(`[chat/stream] ✓ backend responded (${Date.now() - startMs}ms)`);
