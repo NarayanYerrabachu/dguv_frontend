@@ -32,51 +32,87 @@ async function sseFromLLMBackend(
   url: string,
   header: string
 ): Promise<Response> {
-  let parsedHeaders: Record<string, string>;
+  let parsedHeader: Record<string, string>;
   try {
-    parsedHeaders = JSON.parse(header);
+    parsedHeader = JSON.parse(header);
   } catch {
     throw new Error('Invalid LLM_HEADER: must be valid JSON');
   }
 
+  // Extract api-key from header config (supports both api_key and api-key spellings)
+  const apiKey = parsedHeader['api-key'] ?? parsedHeader['api_key'] ?? '';
+  // Strip api key fields — they go in the body, not the HTTP headers
+  const { 'api-key': _a, api_key: _b, ...httpHeaders } = parsedHeader;
+
+  const outgoingBody = {
+    msg,
+    context: context ?? 'noSession',
+    lang: language ?? 'de',
+    'api-key': apiKey,
+  };
+
+  console.log(`[chat/stream] → ${url} | payload keys: ${Object.keys(outgoingBody).join(', ')}`);
+
   const llmResponse = await fetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...parsedHeaders },
-    body: JSON.stringify({ msg, context, language }),
+    headers: { 'Content-Type': 'application/json', ...httpHeaders },
+    body: JSON.stringify(outgoingBody),
     signal: AbortSignal.timeout(60_000),
   });
+
+  console.log(`[chat/stream] ← status: ${llmResponse.status}`);
 
   if (!llmResponse.ok) {
     throw new Error(`LLM API error: ${llmResponse.statusText}`);
   }
 
-  const contentType = llmResponse.headers.get('content-type') || '';
-
-  // Backend already sends SSE — pass through directly
-  if (contentType.includes('text/event-stream')) {
-    return new Response(llmResponse.body, {
-      headers: {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        Connection: 'keep-alive',
-      },
-    });
-  }
-
-  // Backend sends plain stream — wrap tokens as SSE events
   const encoder = new TextEncoder();
   const readable = new ReadableStream({
     async start(controller) {
       const reader = llmResponse.body!.getReader();
       const decoder = new TextDecoder();
+      // Buffer partial SSE lines across chunk boundaries
+      let lineBuffer = '';
       try {
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
-          const token = decoder.decode(value, { stream: true });
-          controller.enqueue(encoder.encode(`event: token\ndata: ${JSON.stringify({ token })}\n\n`));
+          lineBuffer += decoder.decode(value, { stream: true });
+          // Process complete SSE messages (delimited by blank line)
+          const parts = lineBuffer.split('\n\n');
+          lineBuffer = parts.pop() ?? '';
+          for (const part of parts) {
+            const dataLine = part.split('\n').find((l) => l.startsWith('data: '));
+            if (!dataLine) continue;
+            let msg: Record<string, unknown>;
+            try {
+              msg = JSON.parse(dataLine.slice(6));
+            } catch {
+              continue;
+            }
+            if (msg.type === 'token') {
+              const token = (msg.content ?? '') as string;
+              controller.enqueue(encoder.encode(`event: token\ndata: ${JSON.stringify({ token })}\n\n`));
+            } else if (msg.type === 'done') {
+              // context value from Session API — pass through as sources for now
+              controller.enqueue(encoder.encode(`event: done\ndata: ${JSON.stringify({ sources: [] })}\n\n`));
+            }
+          }
         }
-        controller.enqueue(encoder.encode(`event: done\ndata: ${JSON.stringify({ sources: [] })}\n\n`));
+        // Flush any remaining buffered message
+        if (lineBuffer.trim()) {
+          const dataLine = lineBuffer.split('\n').find((l) => l.startsWith('data: '));
+          if (dataLine) {
+            try {
+              const msg = JSON.parse(dataLine.slice(6)) as Record<string, unknown>;
+              if (msg.type === 'token') {
+                const token = (msg.content ?? '') as string;
+                controller.enqueue(encoder.encode(`event: token\ndata: ${JSON.stringify({ token })}\n\n`));
+              }
+            } catch { /* ignore */ }
+          }
+          controller.enqueue(encoder.encode(`event: done\ndata: ${JSON.stringify({ sources: [] })}\n\n`));
+        }
       } catch (err) {
         controller.enqueue(encoder.encode(`event: error\ndata: ${JSON.stringify({ message: String(err) })}\n\n`));
       } finally {
@@ -122,7 +158,6 @@ export async function POST(request: NextRequest) {
     }
 
     if (streamUrl && llmHeader) {
-      console.log(`[chat/stream] → backend: ${streamUrl} | msg: "${msg.slice(0, 80)}"${language ? ` | lang: ${language}` : ''}`);
       const response = await sseFromLLMBackend(msg, context, language, streamUrl, llmHeader);
       console.log(`[chat/stream] ✓ backend responded (${Date.now() - startMs}ms)`);
       return response;

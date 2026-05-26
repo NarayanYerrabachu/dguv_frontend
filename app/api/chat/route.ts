@@ -28,18 +28,34 @@ async function streamLLMBackend(
   url: string,
   header: string
 ): Promise<Response> {
-  let parsedHeaders: Record<string, string>;
+  let parsedHeader: Record<string, string>;
   try {
-    parsedHeaders = JSON.parse(header);
+    parsedHeader = JSON.parse(header);
   } catch {
     throw new Error('Invalid LLM_HEADER: must be valid JSON');
   }
 
+  // Extract api-key from header config (supports both api_key and api-key spellings)
+  const apiKey = parsedHeader['api-key'] ?? parsedHeader['api_key'] ?? '';
+  // Strip api key fields — they go in the body, not the HTTP headers
+  const { 'api-key': _a, api_key: _b, ...httpHeaders } = parsedHeader;
+
+  const outgoingBody = {
+    msg,
+    context: context ?? 'noSession',
+    lang: language ?? 'de',
+    'api-key': apiKey,
+  };
+
+  console.log(`[chat] → ${url} | payload keys: ${Object.keys(outgoingBody).join(', ')}`);
+
   const llmResponse = await fetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...parsedHeaders },
-    body: JSON.stringify({ msg, context, language }),
+    headers: { 'Content-Type': 'application/json', ...httpHeaders },
+    body: JSON.stringify(outgoingBody),
   });
+
+  console.log(`[chat] ← status: ${llmResponse.status}`);
 
   if (!llmResponse.ok) {
     throw new Error(`LLM API error: ${llmResponse.statusText}`);
