@@ -9,6 +9,7 @@ import { useChatMessages } from "@/hooks/useChatMessages";
 export type Source = {
   title: string;
   url?: string;
+  subItems?: string[];
 };
 
 export type Message = {
