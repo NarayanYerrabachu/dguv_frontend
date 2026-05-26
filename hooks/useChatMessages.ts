@@ -4,11 +4,27 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { ChangeEvent, FormEvent, KeyboardEvent } from "react";
 import type { Message, Source } from "@/components/chat/ChatContent";
 
+function parseSourcesMarkdown(text: string): Source[] {
+  const sources: Source[] = [];
+  for (const line of text.split("\n")) {
+    const sourceMatch = line.match(/^-\s+\[(.+?)\]\((.+?)\)/);
+    if (sourceMatch) {
+      sources.push({ title: sourceMatch[1], url: sourceMatch[2], subItems: [] });
+      continue;
+    }
+    const subMatch = line.match(/^\s+\+\s+(.+)/);
+    if (subMatch && sources.length > 0) {
+      sources[sources.length - 1].subItems!.push(subMatch[1].trim());
+    }
+  }
+  return sources;
+}
+
 const WAITING_PHRASES = [
-  { delay: 1000,  text: "Einen Moment bitte, die Bearbeitung Ihres Anliegens wird gestartet." },
-  { delay: 5000,  text: "Ich stelle die relevanten Informationen für Sie zusammen." },
-  { delay: 10000, text: "Vielen Dank für Ihre Geduld. Ich bereite die Antwort für Sie vor." },
-  { delay: 20000, text: "Aufgrund eines erhöhten Anfrageaufkommens kann die Antwort etwas länger dauern." },
+  { delay: 0,    text: "Einen Moment bitte, ich prüfe Ihr Anliegen." },
+  { delay: 3000, text: "Einen Augenblick bitte, ich prüfe derzeit verschiedene Quellen, um Ihnen eine möglichst genaue Antwort zu geben." },
+  { delay: 7000,  text: "Ich stelle derzeit die bestmögliche Antwort für Sie zusammen." },
+  { delay: 12000, text: "Vielen Dank für Ihre Geduld, ich bin gleich fertig." },
 ];
 
 const ERROR_MESSAGE = "Fehler bei der Verbindung zum Server.";
@@ -115,9 +131,12 @@ export function useChatMessages() {
               updated[updated.length - 1] = { ...last, content: last.content + token };
               return updated;
             });
-          } else if (eventType === "done") {
-            const sources = (parsed.sources ?? []) as Source[];
+          } else if (eventType === "sources") {
+            const sourcesText = (parsed.content ?? "") as string;
+            const sources = parseSourcesMarkdown(sourcesText);
             if (sources.length > 0) updateLastMessage({ sources });
+          } else if (eventType === "done") {
+            // stream complete — nothing to do, content is already appended
           } else if (eventType === "error") {
             const errorText = (parsed.message as string) || ERROR_MESSAGE;
             // Use functional update to append to existing partial content

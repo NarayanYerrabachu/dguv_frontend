@@ -93,9 +93,13 @@ async function sseFromLLMBackend(
             if (msg.type === 'token') {
               const token = (msg.content ?? '') as string;
               controller.enqueue(encoder.encode(`event: token\ndata: ${JSON.stringify({ token })}\n\n`));
+            } else if (msg.type === 'sources') {
+              const content = (msg.content ?? '') as string;
+              console.log(`[chat/stream] event: sources (${content.length} chars)`);
+              controller.enqueue(encoder.encode(`event: sources\ndata: ${JSON.stringify({ content })}\n\n`));
             } else if (msg.type === 'done') {
-              // context value from Session API — pass through as sources for now
-              controller.enqueue(encoder.encode(`event: done\ndata: ${JSON.stringify({ sources: [] })}\n\n`));
+              console.log('[chat/stream] event: done');
+              controller.enqueue(encoder.encode(`event: done\ndata: {}\n\n`));
             }
           }
         }
@@ -108,10 +112,14 @@ async function sseFromLLMBackend(
               if (msg.type === 'token') {
                 const token = (msg.content ?? '') as string;
                 controller.enqueue(encoder.encode(`event: token\ndata: ${JSON.stringify({ token })}\n\n`));
+              } else if (msg.type === 'sources') {
+                const content = (msg.content ?? '') as string;
+                controller.enqueue(encoder.encode(`event: sources\ndata: ${JSON.stringify({ content })}\n\n`));
+              } else if (msg.type === 'done') {
+                controller.enqueue(encoder.encode(`event: done\ndata: {}\n\n`));
               }
             } catch { /* ignore */ }
           }
-          controller.enqueue(encoder.encode(`event: done\ndata: ${JSON.stringify({ sources: [] })}\n\n`));
         }
       } catch (err) {
         controller.enqueue(encoder.encode(`event: error\ndata: ${JSON.stringify({ message: String(err) })}\n\n`));

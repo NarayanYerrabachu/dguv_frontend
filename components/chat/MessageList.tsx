@@ -20,7 +20,7 @@ export default function MessageList({
 }: MessageListProps) {
   return (
     <main className={`chat-scrollbar min-h-0 flex-1 overflow-y-auto px-1 py-6 sm:px-4 sm:py-10 ${hidden ? "hidden" : ""}`}>
-      <div className="flex w-full flex-col gap-4">
+      <div className="flex w-full flex-col gap-8">
         {messages.map((message) => (
           <ChatMessage
             key={message.id}
@@ -35,7 +35,7 @@ export default function MessageList({
           <div className="flex items-start gap-3 justify-start">
             <div className="max-w-[calc(100%-56px)] rounded-none px-5 py-4 text-[0.9375rem] leading-[1.6] font-['Source_Sans_3',ui-sans-serif,system-ui,sans-serif] border border-gray-200 bg-white text-[#333333] shadow-sm flex flex-col gap-2">
               <LoadingDots />
-              
+
               {waitingPhrase && (
                 <span className="text-sm text-[#333333]">{waitingPhrase}</span>
               )}
