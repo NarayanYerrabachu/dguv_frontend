@@ -33,7 +33,7 @@ export default function MessageList({
 
         {isLoading && (
           <div className="flex items-start gap-3 justify-start">
-            <div className="max-w-[calc(100%-56px)] rounded-none px-5 py-4 text-[0.9375rem] leading-[1.6] font-['Source_Sans_3',ui-sans-serif,system-ui,sans-serif] border border-gray-200 bg-white text-[#333333] shadow-sm flex flex-col gap-2">
+            <div className="max-w-[calc(100%-56px)] rounded-none px-5 py-4 text-[0.9375rem] leading-[1.6] border border-gray-200 bg-white text-[#333333] shadow-sm flex flex-col gap-2">
               <LoadingDots />
 
               {waitingPhrase && (

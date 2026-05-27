@@ -16,7 +16,7 @@ export default function ChatMessage({ role, content, sources, isError }: ChatMes
   return (
     <div className={`flex items-start gap-3 ${isUser ? "justify-end" : "justify-start"}`}>
       <div
-        className={`max-w-[calc(100%-56px)] rounded-none px-5 py-4 text-[0.9375rem] leading-[1.6] font-['Source_Sans_3',ui-sans-serif,system-ui,sans-serif] ${
+        className={`max-w-[calc(100%-56px)] rounded-none px-5 py-4 text-[0.9375rem] leading-[1.6] ${
           isUser
             ? "bg-[#004994] text-white"
             : isError

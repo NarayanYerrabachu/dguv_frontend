@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
+import { Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+
+const sourceSans3 = Source_Sans_3({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "dguv-chat",
@@ -20,10 +27,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="de">
-      <body className="min-h-screen bg-white">
+      <body className={`${sourceSans3.className} min-h-screen flex flex-col bg-white`}>
         <Header />
 
-        <main className="flex-1 flex items-center justify-center">
+        <main>
           {children}
         </main>
 

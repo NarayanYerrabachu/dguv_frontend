@@ -21,7 +21,7 @@ export default function FeedbackButton() {
         height={38}
         className="w-10 h-10 group-hover:brightness-0 group-hover:invert"
       />
-      <span className="text-xs font-normal font-['Source_Sans_3',Arial,sans-serif] text-[#004994] group-hover:text-white">
+      <span className="text-xs font-normal text-[#004994] group-hover:text-white">
         Feedback
       </span>
     </a>
