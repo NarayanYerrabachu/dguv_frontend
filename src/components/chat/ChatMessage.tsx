@@ -16,12 +16,12 @@ export default function ChatMessage({ role, content, sources, isError }: ChatMes
   return (
     <div className={`flex items-start gap-3 ${isUser ? "justify-end" : "justify-start"}`}>
       <div
-        className={`max-w-[calc(100%-56px)] rounded-none px-5 py-4 text-[0.9375rem] leading-[1.6] ${
+        className={`max-w-[85%] px-6 py-5 text-base leading-normal shadow-[7px_7px_5px_rgba(0,0,0,0.23)] ${
           isUser
             ? "bg-[#004994] text-white"
             : isError
-            ? "border border-red-200 bg-red-50 text-red-700 shadow-sm"
-            : "border border-gray-200 bg-white text-[#333333] shadow-sm"
+            ? "bg-red-50 text-red-700"
+            : "bg-white text-[#333333]"
         }`}
       >
         {isUser ? (
@@ -29,7 +29,7 @@ export default function ChatMessage({ role, content, sources, isError }: ChatMes
         ) : (
           <div className="prose prose-sm max-w-none break-words
             prose-headings:font-semibold prose-headings:text-[#333333] prose-headings:mt-4 prose-headings:mb-1
-            prose-h3:text-[0.9375rem]
+            prose-h3:text-base
             prose-p:my-2 prose-p:text-[#333333]
             prose-ul:my-2 prose-ul:pl-5 prose-ul:list-disc
             prose-li:text-[#333333] prose-li:my-0.5 prose-li:marker:text-black

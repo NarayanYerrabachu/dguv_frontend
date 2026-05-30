@@ -29,8 +29,7 @@ export default function RootLayout({
     <html lang="de">
       <body className={`${sourceSans3.className} min-h-screen flex flex-col bg-white`}>
         <Header />
-
-        <main>
+        <main className="pt-6.5  flex-1">
           {children}
         </main>
 
