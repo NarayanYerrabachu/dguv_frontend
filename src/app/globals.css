@@ -4,7 +4,7 @@
 /* ── Chat-Nachrichten Scrollbar ── */
 .chat-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 73, 148, .2) #d8eefc;
+  scrollbar-color: rgba(0, 73, 148, .2) #d4edfc;
 }
 
 .chat-scrollbar::-webkit-scrollbar {
@@ -12,14 +12,14 @@
 }
 
 .chat-scrollbar::-webkit-scrollbar-track {
-  background: #d8eefc;
+  background: #d4edfc;
   border-radius: 9999px;
 }
 
 .chat-scrollbar::-webkit-scrollbar-thumb {
   background: rgba(0, 73, 148, .2);
   border-radius: 9999px;
-  border: 2px solid #d8eefc;
+  border: 2px solid #d4edfc;
 }
 
 .chat-scrollbar::-webkit-scrollbar-thumb:hover {
@@ -55,7 +55,7 @@
   field-sizing: content;
   padding: .375rem clamp(.75rem, 1.5vw, 1rem);
   font-size: clamp(.8125rem, 1.3vh, .9375rem);
-  font-family: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: inherit;
 }
 
 @keyframes slide-up-fade {

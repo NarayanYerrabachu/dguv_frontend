@@ -50,4 +50,4 @@ All config in `.env.local` (auto-created by `npm start` if missing):
 
 ## Path Alias
 
-`@/*` maps to project root (configured in `tsconfig.json`).
+`@/*` maps to `src/` (configured in `tsconfig.json`).

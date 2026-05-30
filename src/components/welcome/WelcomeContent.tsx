@@ -13,14 +13,14 @@ export default function WelcomeContent() {
       <AvatarCircle />
 
       <div className="mb-6">
-        <p className="text-[18px] leading-[1.35] text-[#003366] mb-4 font-['Source_Sans_3']">
+        <p className="text-[18.5px] leading-[1.35] text-[#333333] mb-4 font-['Source_Sans_3']">
           Willkommen,
           <br />
           ich bin der Chatbot der DGUV zu dem Thema &bdquo;Sicherheit und
           Gesundheit in Bildungseinrichtungen&ldquo;.
         </p>
 
-        <p className="text-[18px] leading-[1.35] text-[#003366] mb-4 font-['Source_Sans_3']">
+        <p className="text-[18px] leading-[1.35] text-[#333333] mb-4 font-['Source_Sans_3']">
           Mein Wissen basiert auf der Expertise der gesetzlichen
           Unfallversicherung. Stellen Sie mir gern Ihre Fragen! Da ich mir
           unsere Unterhaltung nicht merke, benötige ich bei Rückfragen
@@ -56,8 +56,9 @@ export default function WelcomeContent() {
           ein Feedback zu Ihrer Benutzungserfahrung geben.
         </p>
       </div>
-
-      <button onClick={() => router.push('/chat')} className="w-100 h-14 mx-auto flex items-center justify-center gap-3 bg-[#b6d900] text-black text-[20px] font-semibold cursor-pointer transition-transform hover:scale-105" >
+      <button onClick={() => router.push('/chat')} className="w-100 h-14 mx-auto  mt-4 flex items-center 
+      justify-center gap-3 bg-[#b6d900] text-black text-[20px] font-semibold 
+      cursor-pointer transition-transform hover:scale-105" >
         <span>Dialog starten</span>
 
         <PiChatCircleText size={28} />

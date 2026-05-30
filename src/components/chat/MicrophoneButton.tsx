@@ -13,7 +13,7 @@ export default function MicrophoneButton({
     <button
       type="button"
       onClick={onClick}
-      className={`flex hover:bg-[#d8eeff] h-9 w-9 shrink-0 items-center justify-center rounded-none border-none shadow-sm transition-all duration-200 sm:h-12 sm:w-12 ${
+      className={`flex hover:bg-[#d4edfc] h-9 w-9 shrink-0 items-center justify-center rounded-none border-none shadow-sm transition-all duration-200 sm:h-12 sm:w-12 ${
         isRecording ? "bg-[rgba(220,50,50,0.1)]" : "bg-white"
       } cursor-pointer`}
       aria-label={isRecording ? "Aufnahme stoppen" : "Sprachaufnahme starten"}
