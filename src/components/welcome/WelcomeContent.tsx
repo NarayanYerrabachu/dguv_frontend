@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
+import { PiChatCircleText } from 'react-icons/pi';
 import AvatarCircle from './AvatarCircle';
 import { LINKS } from '@/lib/links';
 
@@ -12,22 +12,23 @@ export default function WelcomeContent() {
     <>
       <AvatarCircle />
 
-      <div className="mb-[40px]">
-        <p className="text-[16px] leading-[20.8px] text-[#333333] mb-4">
+      <div className="mb-6">
+        <p className="text-[18.5px] leading-[1.35] text-[#333333] mb-4 font-['Source_Sans_3']">
           Willkommen,
           <br />
           ich bin der Chatbot der DGUV zu dem Thema &bdquo;Sicherheit und
           Gesundheit in Bildungseinrichtungen&ldquo;.
         </p>
 
-        <p className="text-[16px] leading-[20.8px] text-[#333333] mb-4">
+        <p className="text-[18px] leading-[1.35] text-[#333333] mb-4 font-['Source_Sans_3']">
           Mein Wissen basiert auf der Expertise der gesetzlichen
           Unfallversicherung. Stellen Sie mir gern Ihre Fragen! Da ich mir
           unsere Unterhaltung nicht merke, benötige ich bei Rückfragen
           genügend Kontext, um Ihre Frage gezielt beantworten zu können.
         </p>
 
-        <p className="text-[14px] leading-[18.2px] text-[#333333] mb-0">
+        <p className="text-[16px] leading-[1.35] text-[#386ba7] mb-0 font-['Source_Sans_3']">
+
           Bitte beachten Sie:
           <br />
           Mit Beginn der Unterhaltung stimmen Sie meinen{' '}
@@ -35,7 +36,7 @@ export default function WelcomeContent() {
             href={LINKS.nutzungsbedingungen}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[#004994] underline"
+            className="text-[#292ef1] underline"
           >
             Nutzungsbedingungen
           </a>{' '}
@@ -47,7 +48,7 @@ export default function WelcomeContent() {
             href={LINKS.datenschutz}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[#004994] underline"
+            className="text-[#292ef1] underline"
           >
             Datenschutzerklärung
           </a>
@@ -55,13 +56,12 @@ export default function WelcomeContent() {
           ein Feedback zu Ihrer Benutzungserfahrung geben.
         </p>
       </div>
-
-      <button
-        onClick={() => router.push('/chat')}
-        className="w-[398px] h-[50px] flex items-center justify-center gap-3 bg-[#afca0b] text-black text-[18px] font-medium cursor-pointer transition-opacity hover:opacity-90"
-      >
+      <button onClick={() => router.push('/chat')} className="w-100 h-14 mx-auto  mt-4 flex items-center 
+      justify-center gap-3 bg-[#b6d900] text-black text-[20px] font-semibold 
+      cursor-pointer transition-transform hover:scale-105" >
         <span>Dialog starten</span>
-        <Image src="/chats-circle.svg" alt="" width={24} height={24} className="brightness-0" />
+
+        <PiChatCircleText size={28} />
       </button>
     </>
   );
