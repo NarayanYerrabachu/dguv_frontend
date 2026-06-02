@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
+import { CgChevronDown } from "react-icons/cg";
 import type { Source } from "@/components/chat/ChatContent";
 
 interface ChatMessageProps {
@@ -16,7 +17,7 @@ export default function ChatMessage({ role, content, sources, isError }: ChatMes
   return (
     <div className={`flex items-start gap-3 ${isUser ? "justify-end" : "justify-start"}`}>
       <div
-        className={`max-w-[85%] px-6 py-5 text-base leading-normal shadow-[7px_7px_5px_rgba(0,0,0,0.23)] ${
+        className={`max-w-[85%] px-6 py-5 text-[15px] leading-normal shadow-[7px_7px_5px_rgba(0,0,0,0.23)] ${
           isUser
             ? "bg-[#004994] text-white"
             : isError
@@ -27,7 +28,7 @@ export default function ChatMessage({ role, content, sources, isError }: ChatMes
         {isUser ? (
           <p className="m-0 whitespace-pre-wrap break-words">{content}</p>
         ) : (
-          <div className="prose prose-sm max-w-none break-words
+          <div className="prose prose-base max-w-none break-words
             prose-headings:font-semibold prose-headings:text-[#333333] prose-headings:mt-4 prose-headings:mb-1
             prose-h3:text-base
             prose-p:my-2 prose-p:text-[#333333]
@@ -56,7 +57,7 @@ export default function ChatMessage({ role, content, sources, isError }: ChatMes
               className="flex items-center gap-1 text-sm text-[#004994] underline hover:text-[#003070] cursor-pointer select-none"
             >
               Quellen anzeigen
-              <span className="no-underline">{sourcesOpen ? "∧" : "∨"}</span>
+              <CgChevronDown className={`text-[#004994] transition-transform duration-300 ${sourcesOpen ? "rotate-180" : "rotate-0"}`} />
             </button>
 
             {sourcesOpen && (
