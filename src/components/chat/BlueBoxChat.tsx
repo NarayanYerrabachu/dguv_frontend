@@ -7,11 +7,12 @@ export default function BlueBoxChat({ children }: { children: React.ReactNode })
           mx-auto
           flex
           h-full
-          w-[92vw]
+          w-[94vw]
           flex-col
           overflow-y-auto
           bg-[#d4edfc]
           shadow-[5px_5px_10px_rgba(0,0,0,0.35)]
+          px-6
         "
       >
         {children}

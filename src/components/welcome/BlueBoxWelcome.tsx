@@ -12,7 +12,6 @@ export default function BlueBoxWelcome({ children }: { children: React.ReactNode
           overflow-y-auto
           bg-[#d4edfc]
           shadow-[5px_5px_10px_rgba(0,0,0,0.35)]
-          pb-10
         "
       >
         {children}

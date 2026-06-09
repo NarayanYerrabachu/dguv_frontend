@@ -1,4 +1,4 @@
-import BlueBoxChat from "@/components/BlueBoxChat";
+import BlueBoxChat from "@/components/chat/BlueBoxChat";
 import ChatContent from "@/components/chat/ChatContent";
 
 export default function ChatPage() {

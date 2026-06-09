@@ -1,4 +1,4 @@
-import BlueBoxWelcome from "@/components/BlueBoxWelcome";
+import BlueBoxWelcome from "@/components/welcome/BlueBoxWelcome";
 import ContentCard from "@/components/welcome/ContentCard";
 import WelcomeContent from "@/components/welcome/WelcomeContent";
 
