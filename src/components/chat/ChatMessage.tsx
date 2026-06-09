@@ -15,20 +15,20 @@ export default function ChatMessage({ role, content, sources, isError }: ChatMes
   const [sourcesOpen, setSourcesOpen] = useState(false);
 
   return (
-    <div className={`flex items-start gap-3 ${isUser ? "justify-end" : "justify-start"}`}>
+    <div className={`flex items-start gap-3  ${isUser ? "justify-end" : "justify-start"}`}>
       <div
-        className={`max-w-[85%] px-6 py-5 text-[15px] leading-normal shadow-[7px_7px_5px_rgba(0,0,0,0.23)] ${
+        className={`max-w-full px-6  leading-normal shadow-[7px_7px_5px_rgba(0,0,0,0.23)] ${
           isUser
-            ? "bg-[#004994] text-white"
+            ? "bg-[#004994] text-white py-5 " 
             : isError
             ? "bg-red-50 text-red-700"
-            : "bg-white text-[#333333]"
+            : "bg-white text-[#333333] py-2 "
         }`}
       >
         {isUser ? (
-          <p className="m-0 whitespace-pre-wrap break-words">{content}</p>
+          <p className="m-0 whitespace-pre-wrap wrap-break-word">{content}</p>
         ) : (
-          <div className="prose prose-base max-w-none break-words
+          <div className="prose prose-base max-w-none wrap-break-word
             prose-headings:font-semibold prose-headings:text-[#333333] prose-headings:mt-4 prose-headings:mb-1
             prose-h3:text-base
             prose-p:my-2 prose-p:text-[#333333]
