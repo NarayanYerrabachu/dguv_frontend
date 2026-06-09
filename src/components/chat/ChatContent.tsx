@@ -60,9 +60,7 @@ export default function ChatContent() {
         hidden={!hasMessages}
       />
       <div className={!hasMessages ? "flex flex-1 items-center justify-center" : ""}>
-        <div className={!hasMessages ? "w-full max-w-440" : ""}>
-          <ChatInputArea {...inputProps} />
-        </div>
+        <ChatInputArea {...inputProps} />
       </div>
     </ChatLayout>
   );

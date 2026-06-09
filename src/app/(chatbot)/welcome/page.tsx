@@ -1,13 +1,15 @@
+import BlueBoxWelcome from "@/components/welcome/BlueBoxWelcome";
 import ContentCard from "@/components/welcome/ContentCard";
 import WelcomeContent from "@/components/welcome/WelcomeContent";
 
 export default function WelcomePage() {
   return (
-    <div>
-
-      <ContentCard>
-        <WelcomeContent />
-      </ContentCard>
-    </div>
+    <BlueBoxWelcome>
+      <div className="flex min-h-0 flex-1 flex-col items-center justify-center ">
+        <ContentCard>
+          <WelcomeContent />
+        </ContentCard>
+      </div>
+    </BlueBoxWelcome>
   );
 }
