@@ -1,4 +1,4 @@
-export default function BlueBox({ children }: { children: React.ReactNode }) {
+export default function BlueBoxWelcome({ children }: { children: React.ReactNode }) {
   return (
     <div className="mt-[72px] h-[calc(100vh-210px)] w-full bg-white py-[8px]">
       <div
