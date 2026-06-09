@@ -36,7 +36,7 @@ export default function WelcomeContent() {
             href={LINKS.nutzungsbedingungen}
             target="_blank"
             rel="noopener noreferrer"
-            className="underline" style={{ color: '#8e5aae' }}
+            className="underline" style={{ color: '-webkit-link' }}
           >
             Nutzungsbedingungen
           </a>{' '}
@@ -48,7 +48,7 @@ export default function WelcomeContent() {
             href={LINKS.datenschutz}
             target="_blank"
             rel="noopener noreferrer"
-            className="underline" style={{ color: '#8e5aae' }}
+            className="underline" style={{ color: '-webkit-link' }}
           >
             Datenschutzerklärung
           </a>
