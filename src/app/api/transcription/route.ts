@@ -1,15 +1,12 @@
 import { NextRequest } from 'next/server';
 
-async function transcribeWithBackend(file: File, url: string, token: string): Promise<string> {
+async function transcribeWithBackend(file: File, url: string, extraHeaders: Record<string, string>): Promise<string> {
   const formData = new FormData();
   formData.append('file', file);
 
-  const headers: Record<string, string> = {};
-  if (token) headers['x-token'] = token;
-
   const response = await fetch(url, {
     method: 'POST',
-    headers,
+    headers: extraHeaders,
     body: formData,
   });
 
@@ -30,18 +27,25 @@ export async function POST(request: NextRequest) {
       return Response.json({ error: 'file is required' }, { status: 400 });
     }
 
-    const sttUrl = process.env.STT_URL;
-    const sttToken = process.env.STT_TOKEN ?? '';
+    const sttUrl = process.env.TRANSCRIPTION_URL ?? process.env.STT_URL;
+
+    let extraHeaders: Record<string, string> = {};
+    const headerEnv = process.env.TRANSCRIPTION_HEADER;
+    if (headerEnv) {
+      try { extraHeaders = JSON.parse(headerEnv); } catch { /* ignore */ }
+    } else if (process.env.STT_TOKEN) {
+      extraHeaders['x-token'] = process.env.STT_TOKEN;
+    }
 
     if (sttUrl) {
       console.log(`[transcription] → backend: ${sttUrl} | Datei: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`);
-      const text = await transcribeWithBackend(file, sttUrl, sttToken);
+      const text = await transcribeWithBackend(file, sttUrl, extraHeaders);
       console.log(`[transcription] ✓ Ergebnis: "${text.slice(0, 100)}"`);
       return Response.json({ text });
     }
 
-    console.log('[transcription] mock-modus (STT_URL nicht konfiguriert)');
-    return Response.json({ text: 'Das ist eine Testtranskription. (Mock-Modus — STT_URL nicht konfiguriert)' });
+    console.log('[transcription] mock-modus (TRANSCRIPTION_URL nicht konfiguriert)');
+    return Response.json({ text: 'Das ist eine Testtranskription. (Mock-Modus — TRANSCRIPTION_URL nicht konfiguriert)' });
   } catch (error) {
     console.error('[transcription] ✗ Fehler:', error);
     return Response.json({ error: 'Internal server error' }, { status: 500 });
