@@ -27,6 +27,8 @@ const WAITING_PHRASES = [
   { delay: 12000, text: "Vielen Dank für Ihre Geduld, ich bin gleich fertig." },
 ];
 
+const TIMEOUT_MS = 30000;
+const TIMEOUT_MESSAGE = "Aktuell kommt es aufgrund vieler Anfragen zu Verzögerungen. Bitte versuchen Sie es zu einem späteren Zeitpunkt erneut.";
 const ERROR_MESSAGE = "Fehler bei der Verbindung zum Server.";
 
 export function useChatMessages() {
@@ -38,11 +40,16 @@ export function useChatMessages() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const readerRef = useRef<ReadableStreamDefaultReader | null>(null);
+  const requestTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const clearWaitingTimeouts = useCallback(() => {
     timeoutsRef.current.forEach(clearTimeout);
     timeoutsRef.current = [];
     setWaitingPhrase(null);
+    if (requestTimeoutRef.current) {
+      clearTimeout(requestTimeoutRef.current);
+      requestTimeoutRef.current = null;
+    }
   }, []);
 
   const startWaitingPhrases = () => {
@@ -153,6 +160,13 @@ export function useChatMessages() {
       }
 
       readerRef.current = null;
+      // If stream completed but no tokens arrived, show error instead of empty bubble
+      setMessages((prev) => {
+        const last = prev[prev.length - 1];
+        if (last?.role === "assistant" && last.content === "")
+          return [...prev.slice(0, -1), { ...last, isError: true, content: TIMEOUT_MESSAGE }];
+        return prev;
+      });
       return true;
     } catch {
       await reader?.cancel();
@@ -211,6 +225,17 @@ export function useChatMessages() {
     setInput("");
     setIsLoading(true);
     startWaitingPhrases();
+
+    requestTimeoutRef.current = setTimeout(() => {
+      readerRef.current?.cancel();
+      clearWaitingTimeouts();
+      setIsLoading(false);
+      setMessages((prev) => {
+        const last = prev[prev.length - 1];
+        const base = (last?.role === "assistant" && last.content === "") ? prev.slice(0, -1) : prev;
+        return [...base, { id: crypto.randomUUID(), role: "assistant", content: TIMEOUT_MESSAGE, isError: true }];
+      });
+    }, TIMEOUT_MS);
 
     try {
       const sseSuccess = await sendViaSSE(currentInput);
