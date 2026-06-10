@@ -10,30 +10,28 @@ interface ChatMessageProps {
   isError?: boolean;
 }
 
-export default function ChatMessage({ role, content, sources, isError }: ChatMessageProps) {
+export default function ChatMessage({ role, content, sources }: ChatMessageProps) {
   const isUser = role === "user";
   const [sourcesOpen, setSourcesOpen] = useState(false);
 
   return (
     <div className={`flex items-start gap-3  ${isUser ? "justify-end" : "justify-start"}`}>
       <div
-        className={`max-w-full px-6  leading-normal shadow-[7px_7px_5px_rgba(0,0,0,0.23)] ${
+        className={`max-w-[85%] px-6  leading-normal shadow-[7px_7px_5px_rgba(0,0,0,0.23)] ${
           isUser
             ? "bg-[#004994] text-white py-5 " 
-            : isError
-            ? "bg-red-50 text-red-700"
             : "bg-white text-[#333333] py-2 "
         }`}
       >
         {isUser ? (
-          <p className="m-0 whitespace-pre-wrap wrap-break-word">{content}</p>
+          <p className="m-0 whitespace-pre-wrap wrap-break-word text-[15px]">{content}</p>
         ) : (
-          <div className="prose prose-base max-w-none wrap-break-word
+          <div className="prose max-w-none wrap-break-word text-[15px]
             prose-headings:font-semibold prose-headings:text-[#333333] prose-headings:mt-4 prose-headings:mb-1
-            prose-h3:text-base
-            prose-p:my-2 prose-p:text-[#333333]
+            prose-h3:text-[15px]
+            prose-p:my-2 prose-p:text-[#333333] prose-p:text-[15px]
             prose-ul:my-2 prose-ul:pl-5 prose-ul:list-disc
-            prose-li:text-[#333333] prose-li:my-0.5 prose-li:marker:text-black
+            prose-li:text-[#333333] prose-li:my-0.5 prose-li:marker:text-black prose-li:text-[15px]
             prose-strong:text-[#333333]
             prose-a:text-[#004994] prose-a:underline hover:prose-a:text-[#003070]">
             <ReactMarkdown
