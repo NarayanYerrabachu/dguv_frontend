@@ -5,6 +5,22 @@ import { PiChatCircleText } from 'react-icons/pi';
 import AvatarCircle from './AvatarCircle';
 import { LINKS } from '@/lib/links';
 
+const normal = {
+  textPrimary:  'text-[19.5px]',
+  textSecondary: 'text-[17px]',
+  btnWidth:     'w-100',
+  btnHeight:    'h-14',
+  btnText:      'text-[19.5px]',
+};
+
+const xl = {
+  textPrimary:  'min-[2100px]:text-[21px]',
+  textSecondary: 'min-[2100px]:text-[16px]',
+  btnWidth:     'min-[2100px]:w-94',
+  btnHeight:    'min-[2100px]:h-14',
+  btnText:      'min-[2100px]:text-[21px]',
+};
+
 export default function WelcomeContent() {
   const router = useRouter();
 
@@ -13,22 +29,21 @@ export default function WelcomeContent() {
       <AvatarCircle />
 
       <div className="mb-6">
-        <p className="text-[19.5px] leading-[1.35] text-[#333333] mb-4">
+        <p className={`${normal.textPrimary} ${xl.textPrimary} leading-[1.35] text-[#333333] mb-4`}>
           Willkommen,
           <br />
           ich bin der Chatbot der DGUV zu dem Thema &bdquo;Sicherheit und
           Gesundheit in Bildungseinrichtungen&ldquo;.
         </p>
 
-        <p className="text-[19px] leading-[1.35] text-[#333333] mb-4">
+        <p className={`${normal.textPrimary} ${xl.textPrimary} leading-[1.35] text-[#333333] mb-4`}>
           Mein Wissen basiert auf der Expertise der gesetzlichen
           Unfallversicherung. Stellen Sie mir gern Ihre Fragen! Da ich mir
           unsere Unterhaltung nicht merke, benötige ich bei Rückfragen
           genügend Kontext, um Ihre Frage gezielt beantworten zu können.
         </p>
 
-        <p className="text-[17px] leading-[1.35] text-[#386ba7] mb-0">
-
+        <p className={`${normal.textSecondary} ${xl.textSecondary} leading-[1.35] text-[#386ba7] mb-0`}>
           Bitte beachten Sie:
           <br />
           Mit Beginn der Unterhaltung stimmen Sie meinen{' '}
@@ -56,11 +71,12 @@ export default function WelcomeContent() {
           ein Feedback zu Ihrer Benutzungserfahrung geben.
         </p>
       </div>
-      <button onClick={() => router.push('/chat')} className="w-100 h-14 mx-auto  mt-4 flex items-center 
-      justify-center gap-3 bg-[#afca0b] text-black text-[20px] font-semibold 
-      cursor-pointer transition-transform hover:scale-105" >
-        <span>Dialog starten</span>
 
+      <button
+        onClick={() => router.push('/chat')}
+        className={`${normal.btnWidth} ${xl.btnWidth} ${normal.btnHeight} ${xl.btnHeight} ${normal.btnText} ${xl.btnText} mx-auto mt-auto flex items-center justify-center gap-3 bg-[#afca0b] text-black font-semibold cursor-pointer transition-transform hover:scale-105`}
+      >
+        <span>Dialog starten</span>
         <PiChatCircleText size={28} />
       </button>
     </>
