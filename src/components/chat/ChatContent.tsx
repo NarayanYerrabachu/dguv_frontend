@@ -27,6 +27,8 @@ export default function ChatContent() {
     isLoading,
     waitingPhrase,
     messagesEndRef,
+    scrollContainerRef,
+    onScroll,
     setTranscribedText,
     handleSubmit,
     handleKeyDown,
@@ -57,6 +59,8 @@ export default function ChatContent() {
         isLoading={isLoading}
         waitingPhrase={waitingPhrase}
         messagesEndRef={messagesEndRef}
+        scrollContainerRef={scrollContainerRef}
+        onScroll={onScroll}
         hidden={!hasMessages}
       />
       <div className={!hasMessages ? "flex flex-1 items-center justify-center" : ""}>

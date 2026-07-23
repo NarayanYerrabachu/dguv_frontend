@@ -38,6 +38,8 @@ export function useChatMessages() {
   const [waitingPhrase, setWaitingPhrase] = useState<string | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const isAtBottom = useRef(true);
   const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const readerRef = useRef<ReadableStreamDefaultReader | null>(null);
   const requestTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -58,8 +60,30 @@ export function useChatMessages() {
     );
   };
 
+  // IntersectionObserver watches the sentinel div at the end of the message list.
+  // When it is visible, the user is at the bottom; when hidden, they have scrolled up.
+  // This avoids all scroll-event race conditions from programmatic scrolling.
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const sentinel = messagesEndRef.current;
+    if (!sentinel) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { isAtBottom.current = entry.isIntersecting; },
+      { root: scrollContainerRef.current, threshold: 0 }
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, []);
+
+  const onScroll = useCallback(() => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+    isAtBottom.current = el.scrollHeight - el.scrollTop - el.clientHeight <= 40;
+  }, []);
+
+  useEffect(() => {
+    if (isAtBottom.current) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "instant" });
+    }
   }, [messages]);
 
   useEffect(() => {
@@ -220,6 +244,7 @@ export function useChatMessages() {
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
 
+    isAtBottom.current = true;
     const currentInput = input;
     setMessages((prev) => [...prev, { id: crypto.randomUUID(), role: "user", content: currentInput }]);
     setInput("");
@@ -277,6 +302,8 @@ export function useChatMessages() {
     isLoading,
     waitingPhrase,
     messagesEndRef,
+    scrollContainerRef,
+    onScroll,
     setTranscribedText,
     handleSubmit,
     handleKeyDown,
