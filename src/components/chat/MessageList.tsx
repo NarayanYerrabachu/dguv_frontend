@@ -8,6 +8,8 @@ interface MessageListProps {
   isLoading: boolean;
   waitingPhrase: string | null;
   messagesEndRef: RefObject<HTMLDivElement | null>;
+  scrollContainerRef: RefObject<HTMLDivElement | null>;
+  onScroll: () => void;
   hidden?: boolean;
 }
 
@@ -16,19 +18,22 @@ export default function MessageList({
   isLoading,
   waitingPhrase,
   messagesEndRef,
+  scrollContainerRef,
+  onScroll,
   hidden = false,
 }: MessageListProps) {
   return (
-    <main className={`chat-scrollbar min-h-0 flex-1 overflow-y-auto pr-6 pb-6 ${hidden ? "hidden" : ""}`}>
+    <main ref={scrollContainerRef} onScroll={onScroll} className={`chat-scrollbar min-h-0 flex-1 overflow-y-auto pr-6 pb-6 ${hidden ? "hidden" : ""}`}>
       <div className="flex w-full flex-col gap-8">
         {messages.map((message) => (
-          <ChatMessage
-            key={message.id}
-            role={message.role}
-            content={message.content}
-            sources={message.sources}
-            isError={message.isError}
-          />
+          <div key={message.id} id={`msg-${message.id}`}>
+            <ChatMessage
+              role={message.role}
+              content={message.content}
+              sources={message.sources}
+              isError={message.isError}
+            />
+          </div>
         ))}
 
         {isLoading && (

@@ -11,7 +11,7 @@ export default function SendButton({ disabled }: SendButtonProps) {
     <button
       type="submit"
       disabled={disabled}
-      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-none border-none bg-white shadow-sm transition-all duration-200 sm:h-12 sm:w-12 ${
+      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-none border-none bg-white shadow-[5px_5px_10px_rgba(0,0,0,0.35)] transition-all duration-200 sm:h-12 sm:w-12 ${
         disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"
       }`}
       aria-label="Nachricht senden"
