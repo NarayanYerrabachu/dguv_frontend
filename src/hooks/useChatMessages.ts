@@ -40,6 +40,8 @@ export function useChatMessages() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const isAtBottom = useRef(true);
+  const isStreamingRef = useRef(false);
+  const scrollToMessageIdRef = useRef<string | null>(null);
   const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const readerRef = useRef<ReadableStreamDefaultReader | null>(null);
   const requestTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -67,7 +69,7 @@ export function useChatMessages() {
     const sentinel = messagesEndRef.current;
     if (!sentinel) return;
     const observer = new IntersectionObserver(
-      ([entry]) => { isAtBottom.current = entry.isIntersecting; },
+      ([entry]) => { if (!entry.isIntersecting) isAtBottom.current = false; },
       { root: scrollContainerRef.current, threshold: 0 }
     );
     observer.observe(sentinel);
@@ -81,7 +83,13 @@ export function useChatMessages() {
   }, []);
 
   useEffect(() => {
-    if (isAtBottom.current) {
+    if (scrollToMessageIdRef.current) {
+      const id = scrollToMessageIdRef.current;
+      scrollToMessageIdRef.current = null;
+      const el = document.getElementById(`msg-${id}`);
+      el?.scrollIntoView({ behavior: "instant", block: "start" });
+      isAtBottom.current = false;
+    } else if (isAtBottom.current && !isStreamingRef.current) {
       messagesEndRef.current?.scrollIntoView({ behavior: "instant" });
     }
   }, [messages]);
@@ -97,6 +105,7 @@ export function useChatMessages() {
 
   const appendAssistantMessage = () => {
     const id = crypto.randomUUID();
+    scrollToMessageIdRef.current = id;
     setMessages((prev) => [...prev, { id, role: "assistant", content: "" }]);
     return id;
   };
@@ -125,6 +134,7 @@ export function useChatMessages() {
 
       // Only append the assistant bubble once we know the stream is open
       clearWaitingTimeouts();
+      isStreamingRef.current = true;
       appendAssistantMessage();
 
       reader = response.body.getReader();
@@ -216,6 +226,7 @@ export function useChatMessages() {
     if (!response.ok || !response.body) throw new Error("Network response error");
 
     clearWaitingTimeouts();
+    isStreamingRef.current = true;
     appendAssistantMessage();
 
     const reader = response.body.getReader();
@@ -254,6 +265,7 @@ export function useChatMessages() {
     requestTimeoutRef.current = setTimeout(() => {
       readerRef.current?.cancel();
       clearWaitingTimeouts();
+      isStreamingRef.current = false;
       setIsLoading(false);
       setMessages((prev) => {
         const last = prev[prev.length - 1];
@@ -276,6 +288,7 @@ export function useChatMessages() {
       ]);
     } finally {
       clearWaitingTimeouts();
+      isStreamingRef.current = false;
       setIsLoading(false);
     }
   };
