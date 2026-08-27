@@ -114,27 +114,27 @@ In the browser Network tab, both chat request payloads show the same `context` U
 
 ---
 
-### Phase 3: Testing ⏸️
+### Phase 3: Testing ✅
 
 **Focus:** Frontend tests.
 
 **Note — no test framework currently configured.** The project has no test runner (`package.json` has no test script). This phase may introduce **Vitest + React Testing Library** (and any minimal config/setup they require) to enable hook testing. Introducing the test tooling is in scope for this phase only if needed to test the fix.
 
 **Definition of Done:**
-- [ ] Test tooling (Vitest + React Testing Library) is installed and a `test` script exists, if not already present.
-- [ ] Test verifies both fetch calls (`/api/chat/stream` and `/api/chat`) receive a `context` field.
-- [ ] Test verifies the `context` value is identical across multiple sends within one hook instance (stability).
-- [ ] Test verifies a fresh hook instance (simulated reload) produces a different `context`.
-- [ ] Test verifies `context` is never the literal `"noSession"` from the client.
-- [ ] All tests pass.
-- [ ] Git commit contains only test/config files (plus dependency manifest changes for the test tooling).
+- [x] Test tooling (Vitest + React Testing Library) is installed and a `test` script exists, if not already present.
+- [x] Test verifies both fetch calls (`/api/chat/stream` and `/api/chat`) receive a `context` field.
+- [x] Test verifies the `context` value is identical across multiple sends within one hook instance (stability).
+- [x] Test verifies a fresh hook instance (simulated reload) produces a different `context`.
+- [x] Test verifies `context` is never the literal `"noSession"` from the client.
+- [x] All tests pass.
+- [x] Git commit contains only test/config files (plus dependency manifest changes for the test tooling).
 
 **Tasks:**
 
 | Task | Files | Complexity | Status | Description |
 |------|-------|------------|--------|-------------|
-| 3.1 | test config (e.g. `vitest.config.ts`, setup file), `package.json` | Medium | ⏸️ | Introduce Vitest + React Testing Library if absent |
-| 3.2 | `src/hooks/__tests__/useChatMessages.test.ts` (approximate) | Medium | ⏸️ | Tests for session-id presence, stability, per-instance uniqueness, and non-`noSession` |
+| 3.1 | `vitest.config.ts`, `vitest.setup.ts`, `package.json` | Medium | ✅ | Introduce Vitest + React Testing Library (+ jsdom); add `test` script |
+| 3.2 | `src/hooks/__tests__/useChatMessages.test.ts` | Medium | ✅ | Tests for session-id presence (SSE + fallback), stability, per-instance uniqueness, and non-`noSession` |
 
 **Bug Discovery Protocol:**
 - If tests reveal implementation bugs: create Bug Findings phase.
@@ -253,6 +253,16 @@ A single, conversation-scoped session identifier, generated once per page load, 
 - Removed `sessionIdRef` ref; replaced both `sessionIdRef.current` usages in `sendViaSSE` and `sendViaFallback` with the bare `sessionId` variable.
 - `useState` was already imported; no new dependencies introduced.
 - `npm run lint` passes with 0 errors.
+
+**2026-08-27**: Phase 3 (Testing) completed.
+- Introduced Vitest + React Testing Library + jsdom (dev dependencies); added `test: "vitest run"` script and `vitest.config.ts` (with `@` → `src` alias) plus `vitest.setup.ts` (jest-dom matchers + `crypto.randomUUID` polyfill guard).
+- Added `src/hooks/__tests__/useChatMessages.test.ts` with 5 tests driving the hook via its public API (`handleInputChange` + `handleSubmit`) and a URL-keyed `global.fetch` mock:
+  - `context` present on the SSE path (`/api/chat/stream`).
+  - `context` present on the fallback path (`/api/chat`, triggered by `ok: false` SSE response) and equal to the SSE `context`.
+  - Stability: identical `context` across 3 sends in one hook instance.
+  - Uniqueness: a fresh hook instance (reload simulation) yields a different `context`.
+  - Client never emits the literal `"noSession"`.
+- All 5 tests pass. No implementation files modified; no bugs found.
 
 ---
 
