@@ -38,6 +38,7 @@ export function useChatMessages() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const readerRef = useRef<ReadableStreamDefaultReader | null>(null);
+  const sessionIdRef = useRef(crypto.randomUUID());
 
   const clearWaitingTimeouts = useCallback(() => {
     timeoutsRef.current.forEach(clearTimeout);
@@ -87,7 +88,7 @@ export function useChatMessages() {
       const response = await fetch("/api/chat/stream", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ msg, language: "de" }),
+        body: JSON.stringify({ msg, language: "de", context: sessionIdRef.current }),
       });
 
       if (!response.ok || !response.body) return false;
@@ -172,7 +173,7 @@ export function useChatMessages() {
     const response = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ msg, language: "de" }),
+      body: JSON.stringify({ msg, language: "de", context: sessionIdRef.current }),
     });
 
     if (!response.ok || !response.body) throw new Error("Network response error");
