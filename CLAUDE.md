@@ -14,9 +14,10 @@ npm start            # Full start with dependency/env checks (finds free port)
 npm stop             # Stop running server
 npm run build        # Production build
 npm run lint         # ESLint (flat config, next/core-web-vitals + typescript)
+npm test             # Run tests (Vitest + React Testing Library)
 ```
 
-No test framework is configured.
+Test framework: **Vitest + React Testing Library** with jsdom. See `vitest.config.ts` and `src/hooks/__tests__/useChatMessages.test.ts` for examples.
 
 ## Architecture
 
@@ -33,7 +34,7 @@ No test framework is configured.
 - `POST /api/transcription` — proxies audio to STT backend (`STT_URL`), returns mock text when unconfigured
 
 **Key patterns**:
-- Chat state lives in `hooks/useChatMessages.ts` — streaming reader pattern with word-by-word append
+- Chat state lives in `hooks/useChatMessages.ts` — streaming reader pattern with word-by-word append; generates a per-page session id (via `useState`) on first render and sends it as `context` with every chat request; session id resets on page reload
 - STT has dual mode in `hooks/useAudioRecorder.ts`: browser SpeechRecognition API (`NEXT_PUBLIC_STT_USE_BROWSER=true`) or MediaRecorder → backend FastWhisper transcription with silence detection
 - `components/chat/ChatContent.tsx` exports the `Message` type used across chat components
 - Layout nesting: root layout (Header/Footer) → `(chatbot)` layout (BlueBox + FeedbackButton) → page

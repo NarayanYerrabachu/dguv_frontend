@@ -65,7 +65,7 @@ Priority order:
 
 **Optional fields:**
 - `language` — Language code (default: `de`)
-- `context` — Session/conversation context (optional)
+- `context` — Session identifier (UUID) for conversation continuity; generated client-side and sent with every request within a page session
 
 **Environment Variables:**
 - `LLM_URL` — Custom LLM endpoint

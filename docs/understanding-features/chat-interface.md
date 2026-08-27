@@ -15,7 +15,8 @@ The chat interface provides a conversational experience where users send text me
 ```mermaid
 flowchart TD
     A[User Action] -->|Text Input| B[handleSubmit]
-    B --> D["POST /api/chat"]
+    B --> C["Attach session context"]
+    C --> D["POST /api/chat or POST /api/chat/stream"]
     D --> I{LLM Response}
     I -->|Success| J["Add to messages"]
     I -->|Error| K["Error message"]
@@ -49,13 +50,14 @@ const handleSubmit = async (e: React.FormEvent) => {
   setIsLoading(true);
   
   try {
-    // Call backend chat API
+    // Call backend chat API (includes session context for conversation continuity)
     const response = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         msg: input,
-        language: "de"
+        language: "de",
+        context: sessionId  // Client-generated session id (stable for page lifetime)
       }),
     });
     
@@ -98,6 +100,29 @@ const scrollToBottom = () => {
 ```
 
 A hidden `<div ref={messagesEndRef} />` at the bottom of the message list ensures new messages are always visible.
+
+#### 3. Session Context for Conversation Continuity
+
+Every chat request includes a `context` field — a client-generated session identifier (UUID) that remains stable throughout a page lifetime:
+
+```typescript
+// Generated once per page load in useChatMessages.ts
+const [sessionId] = useState(() => crypto.randomUUID());
+
+// Sent with every request to maintain conversation state
+body: JSON.stringify({
+  msg: userInput,
+  language: "de",
+  context: sessionId
+})
+```
+
+**Behavior:**
+- The session id is generated once when the hook mounts and never changes during the page's lifetime
+- Every API call (`/api/chat` and `/api/chat/stream`) includes this id
+- The middleware uses `context` to maintain a single conversation session (without `context`, it would start a new session on each turn)
+- On page reload, a new session id is generated (new conversation)
+- Session ids are **not persisted** to localStorage or sessionStorage; they reset on page refresh
 
 ### Key Files and Functions
 
@@ -180,6 +205,7 @@ If no LLM backend is configured, `POST /api/chat` returns an echo response:
 ## Limitations and Considerations
 
 - **No message persistence** — Messages are stored only in client memory; page refresh loses chat history
+- **Session reset on reload** — The `context` (session id) is generated per page load and not persisted; page refresh starts a new conversation with the backend middleware
 - **No retry logic** — If LLM request fails, user must send message again
 - **Single LLM priority** — System picks one backend (custom LLM > mock); cannot switch mid-session
 - **No concurrent requests** — `isLoading` prevents multiple simultaneous chat requests
