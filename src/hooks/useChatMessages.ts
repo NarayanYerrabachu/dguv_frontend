@@ -27,6 +27,8 @@ const WAITING_PHRASES = [
   { delay: 12000, text: "Vielen Dank für Ihre Geduld, ich bin gleich fertig." },
 ];
 
+const TIMEOUT_MS = 30000;
+const TIMEOUT_MESSAGE = "Aktuell kommt es aufgrund vieler Anfragen zu Verzögerungen. Bitte versuchen Sie es zu einem späteren Zeitpunkt erneut.";
 const ERROR_MESSAGE = "Fehler bei der Verbindung zum Server.";
 
 export function useChatMessages() {
@@ -36,14 +38,23 @@ export function useChatMessages() {
   const [waitingPhrase, setWaitingPhrase] = useState<string | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const isAtBottom = useRef(true);
+  const isStreamingRef = useRef(false);
+  const scrollToMessageIdRef = useRef<string | null>(null);
   const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const readerRef = useRef<ReadableStreamDefaultReader | null>(null);
+  const requestTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [sessionId] = useState(() => crypto.randomUUID());
 
   const clearWaitingTimeouts = useCallback(() => {
     timeoutsRef.current.forEach(clearTimeout);
     timeoutsRef.current = [];
     setWaitingPhrase(null);
+    if (requestTimeoutRef.current) {
+      clearTimeout(requestTimeoutRef.current);
+      requestTimeoutRef.current = null;
+    }
   }, []);
 
   const startWaitingPhrases = () => {
@@ -52,8 +63,36 @@ export function useChatMessages() {
     );
   };
 
+  // IntersectionObserver watches the sentinel div at the end of the message list.
+  // When it is visible, the user is at the bottom; when hidden, they have scrolled up.
+  // This avoids all scroll-event race conditions from programmatic scrolling.
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const sentinel = messagesEndRef.current;
+    if (!sentinel) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (!entry.isIntersecting) isAtBottom.current = false; },
+      { root: scrollContainerRef.current, threshold: 0 }
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, []);
+
+  const onScroll = useCallback(() => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+    isAtBottom.current = el.scrollHeight - el.scrollTop - el.clientHeight <= 40;
+  }, []);
+
+  useEffect(() => {
+    if (scrollToMessageIdRef.current) {
+      const id = scrollToMessageIdRef.current;
+      scrollToMessageIdRef.current = null;
+      const el = document.getElementById(`msg-${id}`);
+      el?.scrollIntoView({ behavior: "instant", block: "start" });
+      isAtBottom.current = false;
+    } else if (isAtBottom.current && !isStreamingRef.current) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "instant" });
+    }
   }, [messages]);
 
   useEffect(() => {
@@ -67,6 +106,7 @@ export function useChatMessages() {
 
   const appendAssistantMessage = () => {
     const id = crypto.randomUUID();
+    scrollToMessageIdRef.current = id;
     setMessages((prev) => [...prev, { id, role: "assistant", content: "" }]);
     return id;
   };
@@ -95,6 +135,7 @@ export function useChatMessages() {
 
       // Only append the assistant bubble once we know the stream is open
       clearWaitingTimeouts();
+      isStreamingRef.current = true;
       appendAssistantMessage();
 
       reader = response.body.getReader();
@@ -154,6 +195,13 @@ export function useChatMessages() {
       }
 
       readerRef.current = null;
+      // If stream completed but no tokens arrived, show error instead of empty bubble
+      setMessages((prev) => {
+        const last = prev[prev.length - 1];
+        if (last?.role === "assistant" && last.content === "")
+          return [...prev.slice(0, -1), { ...last, isError: true, content: TIMEOUT_MESSAGE }];
+        return prev;
+      });
       return true;
     } catch {
       await reader?.cancel();
@@ -179,6 +227,7 @@ export function useChatMessages() {
     if (!response.ok || !response.body) throw new Error("Network response error");
 
     clearWaitingTimeouts();
+    isStreamingRef.current = true;
     appendAssistantMessage();
 
     const reader = response.body.getReader();
@@ -207,11 +256,24 @@ export function useChatMessages() {
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
 
+    isAtBottom.current = true;
     const currentInput = input;
     setMessages((prev) => [...prev, { id: crypto.randomUUID(), role: "user", content: currentInput }]);
     setInput("");
     setIsLoading(true);
     startWaitingPhrases();
+
+    requestTimeoutRef.current = setTimeout(() => {
+      readerRef.current?.cancel();
+      clearWaitingTimeouts();
+      isStreamingRef.current = false;
+      setIsLoading(false);
+      setMessages((prev) => {
+        const last = prev[prev.length - 1];
+        const base = (last?.role === "assistant" && last.content === "") ? prev.slice(0, -1) : prev;
+        return [...base, { id: crypto.randomUUID(), role: "assistant", content: TIMEOUT_MESSAGE, isError: true }];
+      });
+    }, TIMEOUT_MS);
 
     try {
       const sseSuccess = await sendViaSSE(currentInput);
@@ -227,6 +289,7 @@ export function useChatMessages() {
       ]);
     } finally {
       clearWaitingTimeouts();
+      isStreamingRef.current = false;
       setIsLoading(false);
     }
   };
@@ -253,6 +316,8 @@ export function useChatMessages() {
     isLoading,
     waitingPhrase,
     messagesEndRef,
+    scrollContainerRef,
+    onScroll,
     setTranscribedText,
     handleSubmit,
     handleKeyDown,

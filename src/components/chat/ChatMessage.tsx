@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
+import { CgChevronDown } from "react-icons/cg";
 import type { Source } from "@/components/chat/ChatContent";
 
 interface ChatMessageProps {
@@ -9,30 +10,28 @@ interface ChatMessageProps {
   isError?: boolean;
 }
 
-export default function ChatMessage({ role, content, sources, isError }: ChatMessageProps) {
+export default function ChatMessage({ role, content, sources }: ChatMessageProps) {
   const isUser = role === "user";
   const [sourcesOpen, setSourcesOpen] = useState(false);
 
   return (
-    <div className={`flex items-start gap-3 ${isUser ? "justify-end" : "justify-start"}`}>
+    <div className={`flex items-start gap-3  ${isUser ? "justify-end" : "justify-start"}`}>
       <div
-        className={`max-w-[calc(100%-56px)] rounded-none px-5 py-4 text-[0.9375rem] leading-[1.6] ${
+        className={`max-w-[85%] px-6  leading-normal shadow-[7px_7px_5px_rgba(0,0,0,0.23)] ${
           isUser
-            ? "bg-[#004994] text-white"
-            : isError
-            ? "border border-red-200 bg-red-50 text-red-700 shadow-sm"
-            : "border border-gray-200 bg-white text-[#333333] shadow-sm"
+            ? "bg-[#004994] text-white py-5 " 
+            : "bg-white text-[#333333] py-2 "
         }`}
       >
         {isUser ? (
-          <p className="m-0 whitespace-pre-wrap break-words">{content}</p>
+          <p className="m-0 whitespace-pre-wrap wrap-break-word text-[15px]">{content}</p>
         ) : (
-          <div className="prose prose-sm max-w-none break-words
+          <div className="prose max-w-none wrap-break-word text-[15px]
             prose-headings:font-semibold prose-headings:text-[#333333] prose-headings:mt-4 prose-headings:mb-1
-            prose-h3:text-[0.9375rem]
-            prose-p:my-2 prose-p:text-[#333333]
+            prose-h3:text-[15px]
+            prose-p:my-2 prose-p:text-[#333333] prose-p:text-[15px]
             prose-ul:my-2 prose-ul:pl-5 prose-ul:list-disc
-            prose-li:text-[#333333] prose-li:my-0.5 prose-li:marker:text-black
+            prose-li:text-[#333333] prose-li:my-0.5 prose-li:marker:text-black prose-li:text-[15px]
             prose-strong:text-[#333333]
             prose-a:text-[#004994] prose-a:underline hover:prose-a:text-[#003070]">
             <ReactMarkdown
@@ -56,7 +55,7 @@ export default function ChatMessage({ role, content, sources, isError }: ChatMes
               className="flex items-center gap-1 text-sm text-[#004994] underline hover:text-[#003070] cursor-pointer select-none"
             >
               Quellen anzeigen
-              <span className="no-underline">{sourcesOpen ? "∧" : "∨"}</span>
+              <CgChevronDown className={`text-[#004994] transition-transform duration-300 ${sourcesOpen ? "rotate-180" : "rotate-0"}`} />
             </button>
 
             {sourcesOpen && (

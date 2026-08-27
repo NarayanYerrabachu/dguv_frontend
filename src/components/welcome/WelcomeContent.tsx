@@ -1,9 +1,25 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
+import { PiChatCircleText } from 'react-icons/pi';
 import AvatarCircle from './AvatarCircle';
 import { LINKS } from '@/lib/links';
+
+const normal = {
+  textPrimary:  'text-[19.5px]',
+  textSecondary: 'text-[17px]',
+  btnWidth:     'w-100',
+  btnHeight:    'h-14',
+  btnText:      'text-[19.5px]',
+};
+
+const xl = {
+  textPrimary:  'min-[2100px]:text-[21px]',
+  textSecondary: 'min-[2100px]:text-[16px]',
+  btnWidth:     'min-[2100px]:w-94',
+  btnHeight:    'min-[2100px]:h-14',
+  btnText:      'min-[2100px]:text-[21px]',
+};
 
 export default function WelcomeContent() {
   const router = useRouter();
@@ -12,22 +28,22 @@ export default function WelcomeContent() {
     <>
       <AvatarCircle />
 
-      <div className="mb-[40px]">
-        <p className="text-[16px] leading-[20.8px] text-[#333333] mb-4">
+      <div className="mb-6">
+        <p className={`${normal.textPrimary} ${xl.textPrimary} leading-[1.35] text-[#333333] mb-4`}>
           Willkommen,
           <br />
           ich bin der Chatbot der DGUV zu dem Thema &bdquo;Sicherheit und
           Gesundheit in Bildungseinrichtungen&ldquo;.
         </p>
 
-        <p className="text-[16px] leading-[20.8px] text-[#333333] mb-4">
+        <p className={`${normal.textPrimary} ${xl.textPrimary} leading-[1.35] text-[#333333] mb-4`}>
           Mein Wissen basiert auf der Expertise der gesetzlichen
           Unfallversicherung. Stellen Sie mir gern Ihre Fragen! Da ich mir
           unsere Unterhaltung nicht merke, benötige ich bei Rückfragen
           genügend Kontext, um Ihre Frage gezielt beantworten zu können.
         </p>
 
-        <p className="text-[14px] leading-[18.2px] text-[#333333] mb-0">
+        <p className={`${normal.textSecondary} ${xl.textSecondary} leading-[1.35] text-[#386ba7] mb-0`}>
           Bitte beachten Sie:
           <br />
           Mit Beginn der Unterhaltung stimmen Sie meinen{' '}
@@ -35,7 +51,7 @@ export default function WelcomeContent() {
             href={LINKS.nutzungsbedingungen}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[#004994] underline"
+            className="underline" style={{ color: '-webkit-link' }}
           >
             Nutzungsbedingungen
           </a>{' '}
@@ -47,7 +63,7 @@ export default function WelcomeContent() {
             href={LINKS.datenschutz}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[#004994] underline"
+            className="underline" style={{ color: '-webkit-link' }}
           >
             Datenschutzerklärung
           </a>
@@ -58,10 +74,10 @@ export default function WelcomeContent() {
 
       <button
         onClick={() => router.push('/chat')}
-        className="w-[398px] h-[50px] flex items-center justify-center gap-3 bg-[#afca0b] text-black text-[18px] font-medium cursor-pointer transition-opacity hover:opacity-90"
+        className={`${normal.btnWidth} ${xl.btnWidth} ${normal.btnHeight} ${xl.btnHeight} ${normal.btnText} ${xl.btnText} mx-auto mt-auto flex items-center justify-center gap-3 bg-[#afca0b] text-black font-semibold cursor-pointer transition-transform hover:scale-105`}
       >
         <span>Dialog starten</span>
-        <Image src="/chats-circle.svg" alt="" width={24} height={24} className="brightness-0" />
+        <PiChatCircleText size={28} />
       </button>
     </>
   );

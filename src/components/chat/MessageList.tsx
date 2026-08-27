@@ -8,6 +8,8 @@ interface MessageListProps {
   isLoading: boolean;
   waitingPhrase: string | null;
   messagesEndRef: RefObject<HTMLDivElement | null>;
+  scrollContainerRef: RefObject<HTMLDivElement | null>;
+  onScroll: () => void;
   hidden?: boolean;
 }
 
@@ -16,24 +18,27 @@ export default function MessageList({
   isLoading,
   waitingPhrase,
   messagesEndRef,
+  scrollContainerRef,
+  onScroll,
   hidden = false,
 }: MessageListProps) {
   return (
-    <main className={`chat-scrollbar min-h-0 flex-1 overflow-y-auto px-1 py-6 sm:px-4 sm:py-10 ${hidden ? "hidden" : ""}`}>
+    <main ref={scrollContainerRef} onScroll={onScroll} className={`chat-scrollbar min-h-0 flex-1 overflow-y-auto pr-6 pb-6 ${hidden ? "hidden" : ""}`}>
       <div className="flex w-full flex-col gap-8">
         {messages.map((message) => (
-          <ChatMessage
-            key={message.id}
-            role={message.role}
-            content={message.content}
-            sources={message.sources}
-            isError={message.isError}
-          />
+          <div key={message.id} id={`msg-${message.id}`}>
+            <ChatMessage
+              role={message.role}
+              content={message.content}
+              sources={message.sources}
+              isError={message.isError}
+            />
+          </div>
         ))}
 
         {isLoading && (
           <div className="flex items-start gap-3 justify-start">
-            <div className="max-w-[calc(100%-56px)] rounded-none px-5 py-4 text-[0.9375rem] leading-[1.6] border border-gray-200 bg-white text-[#333333] shadow-sm flex flex-col gap-2">
+            <div className="max-w-[85%] px-6 py-5 text-base leading-normal bg-white text-[#333333] shadow-[7px_7px_5px_rgba(0,0,0,0.23)] flex flex-col gap-2">
               <LoadingDots />
 
               {waitingPhrase && (

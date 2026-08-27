@@ -1,7 +1,5 @@
 FROM node:24-alpine AS builder
 
-RUN apk add --no-cache dumb-init
-
 WORKDIR /usr/src/app
 
 COPY package.json package-lock.json* ./
@@ -22,12 +20,9 @@ ENV NEXT_TELEMETRY_DISABLED=1
 
 WORKDIR /usr/src/app
 
-COPY --from=builder /usr/src/app/package.json ./
-COPY --from=builder /usr/src/app/package-lock.json ./
-COPY --from=builder /usr/src/app/node_modules ./node_modules
-COPY --from=builder /usr/src/app/.next ./.next
+COPY --from=builder /usr/src/app/.next/standalone ./
+COPY --from=builder /usr/src/app/.next/static ./.next/static
 COPY --from=builder /usr/src/app/public ./public
-COPY --from=builder /usr/src/app/next.config.ts ./
 
 RUN chown -R node:node .
 
@@ -35,4 +30,4 @@ USER node
 
 EXPOSE 3000
 
-CMD ["dumb-init", "node_modules/.bin/next", "start"]
+CMD ["dumb-init", "node", "server.js"]
