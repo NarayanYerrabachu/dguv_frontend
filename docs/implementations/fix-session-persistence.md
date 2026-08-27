@@ -96,16 +96,16 @@ In the browser Network tab, both chat request payloads show the same `context` U
 
 ---
 
-### Phase 2: Implementation Review ⏸️
+### Phase 2: Implementation Review ✅
 
 **Review Type:** Post-Implementation
 
 **Definition of Done:**
-- [ ] Session id is generated once (ref-based), not per render or per message.
-- [ ] `context` is present in BOTH fetch bodies with the same value across turns.
-- [ ] Per-message list-key UUIDs are not conflated with the session id.
-- [ ] No persistence added; no new dependencies; no server-side changes.
-- [ ] No scope creep beyond the single-file change.
+- [x] Session id is generated once (ref-based), not per render or per message.
+- [x] `context` is present in BOTH fetch bodies with the same value across turns.
+- [x] Per-message list-key UUIDs are not conflated with the session id.
+- [x] No persistence added; no new dependencies; no server-side changes.
+- [x] No scope creep beyond the single-file change.
 
 **Process:**
 - code-reviewer reviews Phase 1.
@@ -247,6 +247,12 @@ A single, conversation-scoped session identifier, generated once per page load, 
 - Added `context: sessionIdRef.current` to the `JSON.stringify` body in both `sendViaSSE` (line ~91) and `sendViaFallback` (line ~176).
 - Pre-existing per-message `crypto.randomUUID()` calls (lines 68, 210, 225) are untouched.
 - `npm run lint` passes with 0 errors (4 pre-existing warnings in API routes, unrelated).
+
+**2026-08-27**: Phase 2 review finding resolved (Task 2.1) — replaced `useRef` session id with lazy `useState` initializer.
+- `useRef(crypto.randomUUID())` evaluates `crypto.randomUUID()` on every render (React discards subsequent values but the call still occurs). Replaced with `const [sessionId] = useState(() => crypto.randomUUID())` which calls the initializer exactly once.
+- Removed `sessionIdRef` ref; replaced both `sessionIdRef.current` usages in `sendViaSSE` and `sendViaFallback` with the bare `sessionId` variable.
+- `useState` was already imported; no new dependencies introduced.
+- `npm run lint` passes with 0 errors.
 
 ---
 
