@@ -32,7 +32,7 @@ export default function WelcomeContent() {
         <p className={`${normal.textPrimary} ${xl.textPrimary} leading-[1.35] text-[#333333] mb-4`}>
           Willkommen,
           <br />
-          ich bin der <span className="text-red-600">KI</span>-Chatbot der DGUV zu dem Thema &bdquo;Sicherheit und
+          ich bin der KI-Chatbot der DGUV zu dem Thema &bdquo;Sicherheit und
           Gesundheit in Bildungseinrichtungen&ldquo;.
         </p>
 
