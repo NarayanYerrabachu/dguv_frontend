@@ -43,7 +43,7 @@ export default function WelcomeContent() {
           genügend Kontext, um Ihre Frage gezielt beantworten zu können.
         </p>
 
-        <p className={`${normal.textSecondary} ${xl.textSecondary} leading-[1.35] text-[#386ba7] mb-0`}>
+        <p className={`${normal.textSecondary} ${xl.textSecondary} leading-relaxed sm:leading-[1.35] text-[#386ba7] mb-0`}>
           Bitte beachten Sie:
           <br />
           Mit Beginn der Unterhaltung stimmen Sie meinen{' '}
@@ -74,10 +74,10 @@ export default function WelcomeContent() {
 
       <button
         onClick={() => router.push('/chat')}
-        className={`${normal.btnWidth} ${xl.btnWidth} ${normal.btnHeight} ${xl.btnHeight} ${normal.btnText} ${xl.btnText} mx-auto mt-6 sm:mt-auto flex items-center justify-center gap-3 bg-[#afca0b] text-black font-semibold cursor-pointer transition-transform hover:scale-105`}
+        className={`${normal.btnWidth} ${xl.btnWidth} ${normal.btnHeight} ${xl.btnHeight} ${normal.btnText} ${xl.btnText} mx-auto mt-6 sm:mt-auto flex items-center justify-center gap-3 bg-[#afca0b] text-black font-semibold cursor-pointer transition-transform active:scale-95 sm:hover:scale-105`}
       >
         <span>Dialog starten</span>
-        <PiChatCircleText size={28} />
+        <PiChatCircleText className="w-5 h-5 sm:w-7 sm:h-7" />
       </button>
     </>
   );
