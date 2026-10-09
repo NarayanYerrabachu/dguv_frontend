@@ -51,7 +51,7 @@ export default function ChatInputArea({
         </div>
       ) : (
         <form onSubmit={onSubmit}>
-          <div className="flex w-full items-end gap-1.5 sm:gap-2">
+          <div className="flex w-full items-end gap-1.5 sm:gap-2 pr-14 sm:pr-0">
             <ChatTextarea
               value={input}
               onChange={onInputChange}
