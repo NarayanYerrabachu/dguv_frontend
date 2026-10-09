@@ -1,6 +1,6 @@
 export default function BlueBoxWelcome({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mt-[72px] h-[calc(100vh-210px)] w-full bg-white py-[8px]">
+    <div className="mt-[72px] min-h-[calc(100vh-210px)] sm:h-[calc(100vh-210px)] w-full bg-white py-[8px]">
       <div
         className="
           relative
